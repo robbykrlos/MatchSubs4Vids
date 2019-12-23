@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace ReToolNaming.Classes
 {
-    public static class Log
+    public static class log
     {
         private const string LOG_FILE_NAME = "log.txt";
 
@@ -27,10 +27,7 @@ namespace ReToolNaming.Classes
                 streamWriter.WriteLine("[" + DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + "] " + strLogTextLine);
                 streamWriter.Close();
             }
-            catch (Exception)
-            {
-                //silence
-            }
+            catch(Exception ex){}
         }
     }
 }

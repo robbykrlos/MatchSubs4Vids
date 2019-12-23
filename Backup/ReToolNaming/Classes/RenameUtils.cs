@@ -1,11 +1,12 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Globalization;
-using System.IO;
 using System.Linq;
+using System.Text;
 using System.Windows.Forms;
+using System.IO;
+using System.Globalization;
+using System.Drawing;
+using System.Collections;
 
 namespace ReToolNaming.Classes
 {
@@ -37,22 +38,6 @@ namespace ReToolNaming.Classes
             return this.ListColors;
         }
 
-        internal void LoadRegexesIntoComboBox(ComboBox cbRegexes)
-        { 
-            cbRegexes.DisplayMember = "Text";
-            cbRegexes.ValueMember = "Value";
-
-            var items = new[] {
-                new { Text =  "Used for S01E15 or s01e15 formats. ([sS]\\d+.[eE]\\d+)", Value ="[sS]\\d+.[eE]\\d+"},
-                new { Text = "Used for .0115. formats. (\\.\\d{3,4}\\.)", Value = "\\.\\d{3,4}\\." }
-            };
-
-
-            cbRegexes.DataSource = items;
-
-            cbRegexes.SelectedIndex = 0;
-        }
-
         public void InitializeUtils()
         {
             this.ListColors = GetColors();
@@ -69,7 +54,7 @@ namespace ReToolNaming.Classes
             lvFiles.Columns.Add(ReToolNaming.Properties.Resources.TextUI_Modified, 100);
             lvFiles.Columns.Add(ReToolNaming.Properties.Resources.TextUI_Matching, 50);
 
-        }
+        } 
 
         private static string formatDate(DateTime dtDate)
         {
@@ -129,7 +114,7 @@ namespace ReToolNaming.Classes
             else return folderBrowserDialog.SelectedPath.ToString();
         }
 
-
+        
         public static string[] getFiles(string SourceFolder, string Filter, SearchOption searchOption)
         {
             // ArrayList will hold all file names
@@ -204,15 +189,15 @@ namespace ReToolNaming.Classes
                 }
                 catch (IOException e)
                 {
-                    MessageBox.Show(ReToolNaming.Properties.Resources.TextUI_Error_DriveNotReady + e.Message);
+                    MessageBox.Show(ReToolNaming.Properties.Resources.TextUI_Error_DriveNotReady);
                 }
                 catch (UnauthorizedAccessException e)
                 {
-                    MessageBox.Show(ReToolNaming.Properties.Resources.TextUI_Error_DriveAccessDenied + e.Message);
+                    MessageBox.Show(ReToolNaming.Properties.Resources.TextUI_Error_DriveAccessDenied);
                 }
                 catch (Exception e)
                 {
-                    MessageBox.Show(ReToolNaming.Properties.Resources.TextUI_Error + e.Message);
+                    MessageBox.Show(ReToolNaming.Properties.Resources.TextUI_Error + e);
                 }
             }
 
@@ -231,7 +216,7 @@ namespace ReToolNaming.Classes
         {
             RenameUtils.ClearMatchStatus(lvFilesLeft);
             RenameUtils.ClearMatchStatus(lvFilesRight);
-            Log.addLogTextLine("Matching cleared.");
+            log.addLogTextLine("Matching cleared.");
         }
 
         public static void BehaveLikeRadioCheckBox(ListView lvFiles, ListViewItem checkedListVieeItem, ItemCheckedEventHandler lvFiles_ItemChecked)
@@ -256,17 +241,10 @@ namespace ReToolNaming.Classes
 
         public static string ExtractNumbers(string expr, string strComplexRegex)
         {
-            try
-            {
-                if (String.Empty == strComplexRegex)
-                    return string.Join(null, System.Text.RegularExpressions.Regex.Split(expr, "[^\\d$]"));
-                else
-                    return System.Text.RegularExpressions.Regex.Match(expr, strComplexRegex).Value.ToString();
-            } catch (Exception)
-            {
-                //silence
-                return "";
-            }
+            if (String.Empty == strComplexRegex)
+                return string.Join(null, System.Text.RegularExpressions.Regex.Split(expr, "[^\\d$]"));
+            else
+                return System.Text.RegularExpressions.Regex.Match(expr, strComplexRegex).Value.ToString();
         }
 
         private static List<string> GetColors()
@@ -284,16 +262,7 @@ namespace ReToolNaming.Classes
                 if (knownColor > KnownColor.Transparent)
                 {
                     //add it to our list
-                    if (colorName != Color.Black.Name && 
-                        colorName != Color.White.Name &&
-                        colorName != Color.Blue.Name &&
-                        colorName != Color.CadetBlue.Name &&
-                        colorName != Color.DarkSlateBlue.Name &&
-                        colorName != Color.DarkBlue.Name &&
-                        colorName != Color.DarkGray.Name &&
-                        colorName != Color.Navy.Name && 
-                        colorName != Color.DarkMagenta.Name
-                        ) colors.Add(colorName);
+                    if (colorName != Color.Black.Name && colorName != Color.White.Name) colors.Add(colorName);
                 }
             }
             //return the color list
@@ -307,7 +276,7 @@ namespace ReToolNaming.Classes
                 if (lvItem.Checked)
                 {
                     lvItem.SubItems[3].Text = this.indexMatch.ToString();
-                    lvItem.BackColor = Color.FromName(this.ListColors[(this.indexMatch) % (this.ListColors.Count())]);
+                    lvItem.BackColor = Color.FromName(this.ListColors[(this.indexMatch)%(this.ListColors.Count())]);
                     lvItem.Checked = false;
                     break;
                 }
@@ -329,20 +298,18 @@ namespace ReToolNaming.Classes
             }
         }
 
-        public void AutoMatchListViews(ListView lvFilesLeft, ListView lvFilesRight, ToolStripProgressBar pbProgres, bool flagUseComplexRegex, string strRegex, bool flagUseFastRendering)
+        public void AutoMatchListViews(ListView lvFilesLeft, ListView lvFilesRight, ProgressBar pbProgres, bool flagUseComplexRegex, string strRegex, bool flagUseFastRendering)
         {
             RenameUtils.ClearMathingLeftRight(lvFilesLeft, lvFilesRight);
-            if (!flagUseComplexRegex) strRegex = ".*";
-            Log.addLogTextLine("Auto matching operation " + (flagUseComplexRegex ? "with " : "without ") + "regex support " + (flagUseFastRendering ? "using " : "not using ") + "fast rendering.");
+            log.addLogTextLine("Auto matching operation " + (flagUseComplexRegex ? "with " : "without ") + "regex support " + (flagUseFastRendering ? "using " : "not using ") + "fast rendering.");
+            pbProgres.Show();
             pbProgres.Value = 0;
             foreach (ListViewItem lvItem in lvFilesLeft.Items)
             {
                 if (lvItem.SubItems[3].Text != string.Empty) continue;
-
+                
                 string strLeftFileName = lvItem.Text;
                 string strKeyNumberLeft = RenameUtils.ExtractNumbers(strLeftFileName, flagUseComplexRegex ? strRegex : String.Empty);
-
-                if (flagUseFastRendering && strKeyNumberLeft == "") continue;
 
                 foreach (ListViewItem lvRightItem in lvFilesRight.Items)
                 {
@@ -351,13 +318,11 @@ namespace ReToolNaming.Classes
                     string strRightFileName = lvRightItem.Text;
                     string strKeyNumberRight = RenameUtils.ExtractNumbers(strRightFileName, flagUseComplexRegex ? strRegex : String.Empty);
 
-                    if (flagUseFastRendering && strKeyNumberRight == "") continue;
-
-                    //if (flagUseComplexRegex)
-                    //{
-                    //    strKeyNumberLeft = RenameUtils.ExtractNumbers(strKeyNumberLeft, string.Empty);
-                    //    strKeyNumberRight = RenameUtils.ExtractNumbers(strKeyNumberRight, string.Empty);
-                    //}
+                    if (flagUseComplexRegex)
+                    {
+                        strKeyNumberLeft = RenameUtils.ExtractNumbers(strKeyNumberLeft, string.Empty);
+                        strKeyNumberRight = RenameUtils.ExtractNumbers(strKeyNumberRight, string.Empty);
+                    }
 
                     //MessageBox.Show((strLeftFileName) + " - " + strKeyNumberLeft + " -=- " + strRightFileName + " - " + strKeyNumberRight);
 
@@ -374,9 +339,9 @@ namespace ReToolNaming.Classes
                         break;
                     }
                 }
-
-                pbProgres.Value = (int)((decimal)(lvItem.Index + 1.00) * (decimal)(100.00 / lvFilesLeft.Items.Count));
+                pbProgres.Value = (int)((decimal)(lvItem.Index+1.00) * (decimal)(100.00 / lvFilesLeft.Items.Count));
             }
+            pbProgres.Hide();
         }
 
         public void Rename(string strDirection, ListView lvFilesLeft, ListView lvFilesRight, FolderBrowserDialog folderBrowserDialog, string strSearchPatternLeft, string strSearchPatternRight)
@@ -400,22 +365,22 @@ namespace ReToolNaming.Classes
                             if (strDirection == DIRECTION_LEFT)
                             {
                                 File.Move(fileInfoRight.FullName, fileInfoRight.Directory.FullName + "\\" + strLeftFileNameOnly + fileInfoRight.Extension);
-                                Log.addLogTextLine("Renamed " + fileInfoRight.FullName + " to " + fileInfoRight.Directory.FullName + "\\" + strLeftFileNameOnly + fileInfoRight.Extension);
+                                log.addLogTextLine("Renamed " + fileInfoRight.FullName + " to " + fileInfoRight.Directory.FullName + "\\" + strLeftFileNameOnly + fileInfoRight.Extension);
                                 lvItemLeft.SubItems[3].Text = "";
                                 lvItemRight.SubItems[3].Text = "";
                             }
                             else
                             {
                                 File.Move(fileInfoLeft.FullName, fileInfoLeft.Directory.FullName + "\\" + strRightFileNameOnly + fileInfoLeft.Extension);
-                                Log.addLogTextLine("Renamed " + fileInfoLeft.FullName + " to " + fileInfoLeft.Directory.FullName + "\\" + strRightFileNameOnly + fileInfoLeft.Extension);
+                                log.addLogTextLine("Renamed " + fileInfoLeft.FullName + " to " + fileInfoLeft.Directory.FullName + "\\" + strRightFileNameOnly + fileInfoLeft.Extension);
                                 lvItemLeft.SubItems[3].Text = "";
                                 lvItemRight.SubItems[3].Text = "";
                             }
                         }
                     }
                 }
-                RenameUtils.PopulateFiles(lvFilesLeft, strSearchPatternLeft, folderBrowserDialog);
-                RenameUtils.PopulateFiles(lvFilesRight, strSearchPatternRight, folderBrowserDialog);
+            RenameUtils.PopulateFiles(lvFilesLeft, strSearchPatternLeft, folderBrowserDialog);
+            RenameUtils.PopulateFiles(lvFilesRight, strSearchPatternRight, folderBrowserDialog);
             }
         }
     }

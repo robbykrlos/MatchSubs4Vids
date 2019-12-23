@@ -11,7 +11,6 @@ using System.Management;
 using System.Globalization;
 using System.IO;
 using ReToolNaming.Classes;
-using System.Text.RegularExpressions;
 
 namespace ReToolNaming
 {
@@ -27,9 +26,6 @@ namespace ReToolNaming
             renameUtils.InitializeUtils() ;
             tbSearchPatternLeft.Text = "*.avi|*.mkv|*.mp4|*.m2ts";
             tbSearchPatternRight.Text = "*.srt|*.sub|*.str";
-
-            renameUtils.LoadRegexesIntoComboBox(cbRegexes);
-
             lvFilesLeft.AllowDrop = true;
             lvFilesRight.AllowDrop = true;
             if (path.Length > 0 && Directory.Exists(path))
@@ -41,12 +37,11 @@ namespace ReToolNaming
             }
         }
 
-        
         private void LoadTargetDirectory()
         {
             RenameUtils.PopulateFiles(lvFilesLeft, tbSearchPatternLeft.Text, folderBrowserDialog1);
             RenameUtils.PopulateFiles(lvFilesRight, tbSearchPatternRight.Text, folderBrowserDialog1);
-            Log.addLogTextLine("Populating form with content from path: " + RenameUtils.getFullPath(folderBrowserDialog1).ToString());
+            log.addLogTextLine("Populating form with content from path: " + RenameUtils.getFullPath(folderBrowserDialog1).ToString());
             AutoDetectAutoMatchListViews();
         }
 
@@ -57,7 +52,7 @@ namespace ReToolNaming
       
         private void Form1_Load(object sender, EventArgs e)
         {
-            Log.addLogTextLine("Application opened.");
+            log.addLogTextLine("Application opened.");
             LoadTargetDirectory();
         }
 
@@ -79,7 +74,7 @@ namespace ReToolNaming
         private void Match()
         {
             renameUtils.MatchLeftRight(lvFilesLeft, lvFilesRight);
-            Log.addLogTextLine("Manually matched files");
+            log.addLogTextLine("Manually matched files");
         }
 
         private void bRenameFromLeft_Click(object sender, EventArgs e)
@@ -99,9 +94,7 @@ namespace ReToolNaming
 
         private void AutoDetectAutoMatchListViews()
         {
-            string regex = cbRegexes.SelectedValue == null ? cbRegexes.Text : cbRegexes.SelectedValue.ToString();
-            renameUtils.AutoMatchListViews(lvFilesLeft, lvFilesRight, pbProgress, cbUseComplexRegex.Checked, regex, cbSpeed.Checked);
-            lHelp.Hide();
+            renameUtils.AutoMatchListViews(lvFilesLeft, lvFilesRight, pbProgres, cbUseComplexRegex.Checked, tbRegex.Text.ToString(), cbSpeed.Checked);
         }
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
@@ -112,14 +105,14 @@ namespace ReToolNaming
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            About aboutBox = new About();
+            AboutBox1 aboutBox = new AboutBox1();
             aboutBox.ShowDialog();
             aboutBox.Dispose();
         }
 
         private void cbUseComplexRegex_CheckedChanged(object sender, EventArgs e)
         {
-            cbRegexes.Enabled = cbUseComplexRegex.Checked;
+            tbRegex.Enabled = cbUseComplexRegex.Checked;
         }
 
         private void button1_Click(object sender, EventArgs e)//Clear matches.
@@ -159,7 +152,7 @@ namespace ReToolNaming
                 {
                     RenameUtils.PopulateFiles(lvFilesLeft, tbSearchPatternLeft.Text, folderBrowserDialog1);
                     RenameUtils.PopulateFiles(lvFilesRight, tbSearchPatternRight.Text, folderBrowserDialog1);
-                    Log.addLogTextLine("Populating form with content from path: " + RenameUtils.getFullPath(folderBrowserDialog1).ToString());
+                    log.addLogTextLine("Populating form with content from path: " + RenameUtils.getFullPath(folderBrowserDialog1).ToString());
                     break;
                 }
             }
@@ -176,7 +169,7 @@ namespace ReToolNaming
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Log.addLogTextLine("Application closed.");
+            log.addLogTextLine("Application closed.");
         }
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
@@ -235,7 +228,7 @@ namespace ReToolNaming
 
         private void lHelp_Click(object sender, EventArgs e)
         {
-            lHelp.Hide();
+            lHelp.Text = "";
         }
 
         private void tbSearchPatternLeft_KeyUp(object sender, KeyEventArgs e)
@@ -248,15 +241,6 @@ namespace ReToolNaming
             bFilterRight.PerformClick();
         }
 
-        private void helpToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            lHelp.Show();
-        }
-
-        private void statusStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
-        {
-
-        }
-
+        
     }
 }
