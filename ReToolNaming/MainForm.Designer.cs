@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.bASD = new System.Windows.Forms.Button();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.lvFilesLeft = new System.Windows.Forms.ListView();
             this.lHelp = new System.Windows.Forms.Label();
@@ -55,6 +56,7 @@
             this.tbSearchPatternLeft = new System.Windows.Forms.TextBox();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
+            this.bgWorker = new System.ComponentModel.BackgroundWorker();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -77,6 +79,7 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.bASD);
             this.splitContainer1.Panel1.Controls.Add(this.splitContainer2);
             this.splitContainer1.Panel1.Controls.Add(this.menuStrip1);
             // 
@@ -99,6 +102,20 @@
             this.splitContainer1.SplitterDistance = 592;
             this.splitContainer1.TabIndex = 0;
             this.splitContainer1.TabStop = false;
+            // 
+            // bASD
+            // 
+            this.bASD.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.bASD.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.bASD.ForeColor = System.Drawing.Color.OrangeRed;
+            this.bASD.Location = new System.Drawing.Point(1129, 0);
+            this.bASD.Name = "bASD";
+            this.bASD.Size = new System.Drawing.Size(187, 23);
+            this.bASD.TabIndex = 13;
+            this.bASD.TabStop = false;
+            this.bASD.Text = "AutoDownloadSubtitles (F12)";
+            this.bASD.UseVisualStyleBackColor = true;
+            this.bASD.Click += new System.EventHandler(this.bASD_Click);
             // 
             // splitContainer2
             // 
@@ -393,6 +410,13 @@
             this.toolStripContainer1.TabStop = false;
             this.toolStripContainer1.Text = "toolStripContainer1";
             // 
+            // bgWorker
+            // 
+            this.bgWorker.WorkerReportsProgress = true;
+            this.bgWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgWorker_DoWork);
+            this.bgWorker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.bgWorker_ProgressChanged);
+            this.bgWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgWorker_RunWorkerCompleted);
+            // 
             // MainForm
             // 
             this.AllowDrop = true;
@@ -409,6 +433,7 @@
             this.Activated += new System.EventHandler(this.Form1_Activated);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.Click += new System.EventHandler(this.MainForm_Click);
             this.DragDrop += new System.Windows.Forms.DragEventHandler(this.Form1_DragDrop);
             this.DragEnter += new System.Windows.Forms.DragEventHandler(this.Form1_DragEnter);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
@@ -461,6 +486,8 @@
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel lStatus;
         private System.Windows.Forms.ToolStripProgressBar pbProgress;
+        private System.Windows.Forms.Button bASD;
+        protected System.ComponentModel.BackgroundWorker bgWorker;
     }
 }
 

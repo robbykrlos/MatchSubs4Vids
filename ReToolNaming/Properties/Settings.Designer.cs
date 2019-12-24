@@ -22,5 +22,23 @@ namespace ReToolNaming.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string OPEN_SUBTITLES_USERNAME {
+            get {
+                return ((string)(this["OPEN_SUBTITLES_USERNAME"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string OPEN_SUBTITLES_PASSWORD {
+            get {
+                return ((string)(this["OPEN_SUBTITLES_PASSWORD"]));
+            }
+        }
     }
 }

@@ -12,6 +12,8 @@ using System.Globalization;
 using System.IO;
 using ReToolNaming.Classes;
 using System.Text.RegularExpressions;
+using System.Reflection;
+using System.Configuration;
 
 namespace ReToolNaming
 {
@@ -19,10 +21,16 @@ namespace ReToolNaming
     {
         private RenameUtils renameUtils;
         private bool pathViaAppParams = false;
+
+        private ConsoleLog consolelog;
         
         public MainForm(string path)
         {
             InitializeComponent();
+
+            string VersionNumber = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            this.Text = "ReToolNaming (v" + VersionNumber + ")";
+
             renameUtils = new RenameUtils();
             renameUtils.InitializeUtils() ;
             tbSearchPatternLeft.Text = "*.avi|*.mkv|*.mp4|*.m2ts";
@@ -39,9 +47,49 @@ namespace ReToolNaming
                 folderBrowserDialog1.SelectedPath = path;
                 LoadTargetDirectory();
             }
+
+            consolelog = new ConsoleLog();
+            consolelog.StartPosition = FormStartPosition.CenterParent;
+            consolelog.Hide();
         }
 
-        
+        private void StartAutomaticDownloadSubtitles()
+        {
+            pbProgress.Value = 0;
+            //consolelog.StartPosition = FormStartPosition.CenterParent;
+            consolelog.lConsoleLog.Text = "Wait. Procesing...";
+            consolelog.Show();
+
+            bgWorker.RunWorkerAsync();
+        }
+
+        private void bgWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            string[] args = new string[3];
+
+            args[0] = folderBrowserDialog1.SelectedPath.ToString();
+            args[1] = Properties.Settings.Default.OPEN_SUBTITLES_USERNAME;
+            args[2] = Properties.Settings.Default.OPEN_SUBTITLES_PASSWORD;
+
+            e.Result = AutoDownloadSubtitle.ASD.Start(args) + "\r\nPres SPACE / ESC / ENTER to close this message";
+        }
+
+        private void bgWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            consolelog.lConsoleLog.Text = e.Result.ToString();
+            
+            consolelog.lConsoleLog.SelectionStart = consolelog.lConsoleLog.TextLength;
+            consolelog.lConsoleLog.ScrollToCaret();
+
+            pbProgress.Value = 100;
+            bFilterRight.PerformClick();
+        }
+
+        private void bgWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            pbProgress.Value++;
+        }
+
         private void LoadTargetDirectory()
         {
             RenameUtils.PopulateFiles(lvFilesLeft, tbSearchPatternLeft.Text, folderBrowserDialog1);
@@ -202,6 +250,11 @@ namespace ReToolNaming
                 RenameUtils.ClearMathingLeftRight(lvFilesLeft, lvFilesRight);
             }
 
+            if (e.KeyCode == Keys.F12)
+            {
+                StartAutomaticDownloadSubtitles();
+            }
+
             if (e.KeyCode == Keys.Enter)
             {
                     Match();
@@ -258,5 +311,14 @@ namespace ReToolNaming
 
         }
 
+        private void bASD_Click(object sender, EventArgs e)
+        {
+            StartAutomaticDownloadSubtitles();
+        }
+
+        private void MainForm_Click(object sender, EventArgs e)
+        {
+            if (consolelog.Visible) consolelog.Hide();
+        }
     }
 }
