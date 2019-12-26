@@ -1,4 +1,4 @@
-﻿namespace ReToolNaming
+﻿namespace MatchSubs4Vids
 {
     partial class MainForm
     {
@@ -73,6 +73,7 @@
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.IsSplitterFixed = true;
             this.splitContainer1.Location = new System.Drawing.Point(0, 0);
             this.splitContainer1.Name = "splitContainer1";
             this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
@@ -85,6 +86,7 @@
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.splitContainer1.Panel2.Controls.Add(this.statusStrip1);
             this.splitContainer1.Panel2.Controls.Add(this.cbRegexes);
             this.splitContainer1.Panel2.Controls.Add(this.cbSpeed);
@@ -99,13 +101,13 @@
             this.splitContainer1.Panel2.Controls.Add(this.tbSearchPatternRight);
             this.splitContainer1.Panel2.Controls.Add(this.tbSearchPatternLeft);
             this.splitContainer1.Size = new System.Drawing.Size(1316, 700);
-            this.splitContainer1.SplitterDistance = 592;
+            this.splitContainer1.SplitterDistance = 600;
             this.splitContainer1.TabIndex = 0;
             this.splitContainer1.TabStop = false;
             // 
             // bASD
             // 
-            this.bASD.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.bASD.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.bASD.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.bASD.ForeColor = System.Drawing.Color.OrangeRed;
             this.bASD.Location = new System.Drawing.Point(1129, 0);
@@ -131,7 +133,7 @@
             // 
             this.splitContainer2.Panel2.Controls.Add(this.lHelp);
             this.splitContainer2.Panel2.Controls.Add(this.lvFilesRight);
-            this.splitContainer2.Size = new System.Drawing.Size(1316, 568);
+            this.splitContainer2.Size = new System.Drawing.Size(1316, 576);
             this.splitContainer2.SplitterDistance = 655;
             this.splitContainer2.TabIndex = 0;
             this.splitContainer2.TabStop = false;
@@ -145,7 +147,7 @@
             this.lvFilesLeft.Location = new System.Drawing.Point(0, 0);
             this.lvFilesLeft.MultiSelect = false;
             this.lvFilesLeft.Name = "lvFilesLeft";
-            this.lvFilesLeft.Size = new System.Drawing.Size(655, 568);
+            this.lvFilesLeft.Size = new System.Drawing.Size(655, 576);
             this.lvFilesLeft.TabIndex = 2;
             this.lvFilesLeft.UseCompatibleStateImageBehavior = false;
             this.lvFilesLeft.View = System.Windows.Forms.View.Details;
@@ -158,7 +160,7 @@
             this.lHelp.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.lHelp.AutoSize = true;
             this.lHelp.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.lHelp.Location = new System.Drawing.Point(7, 311);
+            this.lHelp.Location = new System.Drawing.Point(15, 315);
             this.lHelp.Name = "lHelp";
             this.lHelp.Size = new System.Drawing.Size(538, 240);
             this.lHelp.TabIndex = 4;
@@ -174,7 +176,7 @@
             this.lvFilesRight.Location = new System.Drawing.Point(0, 0);
             this.lvFilesRight.MultiSelect = false;
             this.lvFilesRight.Name = "lvFilesRight";
-            this.lvFilesRight.Size = new System.Drawing.Size(657, 568);
+            this.lvFilesRight.Size = new System.Drawing.Size(657, 576);
             this.lvFilesRight.TabIndex = 3;
             this.lvFilesRight.UseCompatibleStateImageBehavior = false;
             this.lvFilesRight.View = System.Windows.Forms.View.Details;
@@ -221,7 +223,7 @@
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.lStatus,
             this.pbProgress});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 82);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 74);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(1316, 22);
             this.statusStrip1.TabIndex = 12;
@@ -243,7 +245,7 @@
             // 
             this.cbRegexes.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.cbRegexes.FormattingEnabled = true;
-            this.cbRegexes.Location = new System.Drawing.Point(501, 52);
+            this.cbRegexes.Location = new System.Drawing.Point(501, 40);
             this.cbRegexes.Name = "cbRegexes";
             this.cbRegexes.Size = new System.Drawing.Size(326, 21);
             this.cbRegexes.TabIndex = 11;
@@ -255,7 +257,7 @@
             this.cbSpeed.AutoSize = true;
             this.cbSpeed.Checked = true;
             this.cbSpeed.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbSpeed.Location = new System.Drawing.Point(441, 23);
+            this.cbSpeed.Location = new System.Drawing.Point(441, 11);
             this.cbSpeed.Name = "cbSpeed";
             this.cbSpeed.Size = new System.Drawing.Size(46, 17);
             this.cbSpeed.TabIndex = 10;
@@ -268,7 +270,7 @@
             this.bClearMatching.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.bClearMatching.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.bClearMatching.ForeColor = System.Drawing.Color.DarkRed;
-            this.bClearMatching.Location = new System.Drawing.Point(493, 19);
+            this.bClearMatching.Location = new System.Drawing.Point(493, 7);
             this.bClearMatching.Name = "bClearMatching";
             this.bClearMatching.Size = new System.Drawing.Size(110, 23);
             this.bClearMatching.TabIndex = 9;
@@ -285,7 +287,7 @@
             this.cbUseComplexRegex.Checked = true;
             this.cbUseComplexRegex.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbUseComplexRegex.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cbUseComplexRegex.Location = new System.Drawing.Point(441, 53);
+            this.cbUseComplexRegex.Location = new System.Drawing.Point(441, 41);
             this.cbUseComplexRegex.Name = "cbUseComplexRegex";
             this.cbUseComplexRegex.Size = new System.Drawing.Size(54, 17);
             this.cbUseComplexRegex.TabIndex = 7;
@@ -299,7 +301,7 @@
             this.bAutoDetect.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.bAutoDetect.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.bAutoDetect.ForeColor = System.Drawing.Color.DarkGreen;
-            this.bAutoDetect.Location = new System.Drawing.Point(712, 19);
+            this.bAutoDetect.Location = new System.Drawing.Point(712, 7);
             this.bAutoDetect.Name = "bAutoDetect";
             this.bAutoDetect.Size = new System.Drawing.Size(115, 23);
             this.bAutoDetect.TabIndex = 1;
@@ -312,7 +314,7 @@
             // 
             this.bRenameFromRight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.bRenameFromRight.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bRenameFromRight.Location = new System.Drawing.Point(1084, 17);
+            this.bRenameFromRight.Location = new System.Drawing.Point(1084, 7);
             this.bRenameFromRight.Name = "bRenameFromRight";
             this.bRenameFromRight.Size = new System.Drawing.Size(220, 23);
             this.bRenameFromRight.TabIndex = 6;
@@ -325,7 +327,7 @@
             // 
             this.bRenameFromLeft.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.bRenameFromLeft.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bRenameFromLeft.Location = new System.Drawing.Point(12, 17);
+            this.bRenameFromLeft.Location = new System.Drawing.Point(12, 7);
             this.bRenameFromLeft.Name = "bRenameFromLeft";
             this.bRenameFromLeft.Size = new System.Drawing.Size(220, 23);
             this.bRenameFromLeft.TabIndex = 5;
@@ -338,7 +340,7 @@
             // 
             this.bMatch.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.bMatch.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.bMatch.Location = new System.Drawing.Point(609, 19);
+            this.bMatch.Location = new System.Drawing.Point(609, 7);
             this.bMatch.Name = "bMatch";
             this.bMatch.Size = new System.Drawing.Size(97, 23);
             this.bMatch.TabIndex = 4;
@@ -350,7 +352,7 @@
             // bFilterRight
             // 
             this.bFilterRight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.bFilterRight.Location = new System.Drawing.Point(1003, 50);
+            this.bFilterRight.Location = new System.Drawing.Point(991, 38);
             this.bFilterRight.Name = "bFilterRight";
             this.bFilterRight.Size = new System.Drawing.Size(75, 23);
             this.bFilterRight.TabIndex = 3;
@@ -362,7 +364,7 @@
             // bFilterLeft
             // 
             this.bFilterLeft.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.bFilterLeft.Location = new System.Drawing.Point(238, 50);
+            this.bFilterLeft.Location = new System.Drawing.Point(247, 38);
             this.bFilterLeft.Name = "bFilterLeft";
             this.bFilterLeft.Size = new System.Drawing.Size(75, 23);
             this.bFilterLeft.TabIndex = 2;
@@ -374,7 +376,7 @@
             // tbSearchPatternRight
             // 
             this.tbSearchPatternRight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbSearchPatternRight.Location = new System.Drawing.Point(1084, 52);
+            this.tbSearchPatternRight.Location = new System.Drawing.Point(1072, 40);
             this.tbSearchPatternRight.Name = "tbSearchPatternRight";
             this.tbSearchPatternRight.Size = new System.Drawing.Size(232, 20);
             this.tbSearchPatternRight.TabIndex = 1;
@@ -384,7 +386,7 @@
             // tbSearchPatternLeft
             // 
             this.tbSearchPatternLeft.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.tbSearchPatternLeft.Location = new System.Drawing.Point(3, 52);
+            this.tbSearchPatternLeft.Location = new System.Drawing.Point(12, 40);
             this.tbSearchPatternLeft.Name = "tbSearchPatternLeft";
             this.tbSearchPatternLeft.Size = new System.Drawing.Size(229, 20);
             this.tbSearchPatternLeft.TabIndex = 0;
@@ -429,14 +431,15 @@
             this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
-            this.Text = "ReToolNaming";
+            this.Text = "MatchSubs4Vids";
             this.Activated += new System.EventHandler(this.Form1_Activated);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
-            this.Load += new System.EventHandler(this.Form1_Load);
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.Click += new System.EventHandler(this.MainForm_Click);
             this.DragDrop += new System.Windows.Forms.DragEventHandler(this.Form1_DragDrop);
             this.DragEnter += new System.Windows.Forms.DragEventHandler(this.Form1_DragEnter);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
+            this.Resize += new System.EventHandler(this.MainForm_Resize);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);

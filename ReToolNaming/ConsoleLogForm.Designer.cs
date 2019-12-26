@@ -1,6 +1,6 @@
-﻿namespace ReToolNaming
+﻿namespace MatchSubs4Vids
 {
-    partial class ConsoleLog
+    partial class ConsoleLogForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConsoleLog));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConsoleLogForm));
             this.lConsoleLog = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 

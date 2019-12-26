@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ReToolNaming.Properties {
+namespace MatchSubs4Vids.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -38,6 +38,15 @@ namespace ReToolNaming.Properties {
         public string OPEN_SUBTITLES_PASSWORD {
             get {
                 return ((string)(this["OPEN_SUBTITLES_PASSWORD"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("eng")]
+        public string OPEN_SUBTITLES_DOWNLOAD_LANGUAGES {
+            get {
+                return ((string)(this["OPEN_SUBTITLES_DOWNLOAD_LANGUAGES"]));
             }
         }
     }

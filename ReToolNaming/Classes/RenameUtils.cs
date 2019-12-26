@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MatchSubs4Vids.Properties;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
@@ -7,7 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace ReToolNaming.Classes
+namespace Classes
 {
     public class RenameUtils
     {
@@ -17,22 +18,22 @@ namespace ReToolNaming.Classes
         private List<string> ListColors;
         private int indexMatch;
 
-        public void setIndexMatch(int indexMatch)
+        public void SetIndexMatch(int indexMatch)
         {
             this.indexMatch = indexMatch;
         }
 
-        public int getIndexMatch()
+        public int GetIndexMatch()
         {
             return this.indexMatch;
         }
 
-        protected void setListColors(List<string> ListColors)
+        protected void SetListColors(List<string> ListColors)
         {
             this.ListColors = ListColors;
         }
 
-        protected List<string> getListColors()
+        protected List<string> GetListColors()
         {
             return this.ListColors;
         }
@@ -44,12 +45,12 @@ namespace ReToolNaming.Classes
 
             var items = new[] {
                 new { Text =  "Used for S01E15 or s01e15 formats. ([sS]\\d+.[eE]\\d+)", Value ="[sS]\\d+.[eE]\\d+"},
-                new { Text = "Used for .0115. formats. (\\.\\d{3,4}\\.)", Value = "\\.\\d{3,4}\\." }
+                new { Text = "Used for .0115. formats. (\\.\\d{3,4}\\.)", Value = "\\.\\d{3,4}\\." },
+                new { Text = "Generic number macther. (\\d*)", Value = "\\d*" }
             };
 
 
             cbRegexes.DataSource = items;
-
             cbRegexes.SelectedIndex = 0;
         }
 
@@ -62,33 +63,28 @@ namespace ReToolNaming.Classes
         public static void InitListView(ListView lvFiles)
         {
             //init ListView control
-            lvFiles.Clear();		//clear control
-            //create column header for ListView
-            lvFiles.Columns.Add(ReToolNaming.Properties.Resources.TextUI_Name, 400);
-            lvFiles.Columns.Add(ReToolNaming.Properties.Resources.TextUI_Size, 100);
-            lvFiles.Columns.Add(ReToolNaming.Properties.Resources.TextUI_Modified, 100);
-            lvFiles.Columns.Add(ReToolNaming.Properties.Resources.TextUI_Matching, 50);
+            lvFiles.Clear(); //clear control
 
+            //create column header for ListView
+            lvFiles.Columns.Add(Resources.TextUI_Name, 400);
+            lvFiles.Columns.Add(Resources.TextUI_Size, 100);
+            lvFiles.Columns.Add(Resources.TextUI_Modified, 100);
+            lvFiles.Columns.Add(Resources.TextUI_Matching, 50);
         }
 
-        private static string formatDate(DateTime dtDate)
+        private static string FormatDate(DateTime dtDate)
         {
             //Get date and time in short format
-            string stringDate = "";
-
-            stringDate = dtDate.ToShortDateString().ToString() + " " + dtDate.ToShortTimeString().ToString();
-
+            string stringDate = dtDate.ToShortDateString().ToString() + " " + dtDate.ToShortTimeString().ToString();
             return stringDate;
         }
 
-        private static string formatSize(Int64 lSize)
+        private static string FormatSize(Int64 lSize)
         {
-            //Format number to KB
-            string stringSize = "";
             NumberFormatInfo myNfi = new NumberFormatInfo();
 
-            Int64 lKBSize = 0;
-
+            //Format number to KB
+            string stringSize;
             if (lSize < 1024)
             {
                 if (lSize == 0)
@@ -105,7 +101,7 @@ namespace ReToolNaming.Classes
             else
             {
                 //convert to KB
-                lKBSize = lSize / 1024;
+                long lKBSize = lSize / 1024;
                 //format number with default format
                 stringSize = lKBSize.ToString("n", myNfi);
                 //remove decimal
@@ -122,7 +118,7 @@ namespace ReToolNaming.Classes
             return stringSplit[_maxIndex - 1];
         }
 
-        public static string getFullPath(FolderBrowserDialog folderBrowserDialog)
+        public static string GetFullPath(FolderBrowserDialog folderBrowserDialog)
         {
             if (folderBrowserDialog.SelectedPath.ToString() == "")
                 return Directory.GetCurrentDirectory();
@@ -130,7 +126,7 @@ namespace ReToolNaming.Classes
         }
 
 
-        public static string[] getFiles(string SourceFolder, string Filter, SearchOption searchOption)
+        public static string[] GetFiles(string SourceFolder, string Filter, SearchOption searchOption)
         {
             // ArrayList will hold all file names
             ArrayList alFiles = new ArrayList();
@@ -158,15 +154,15 @@ namespace ReToolNaming.Classes
             InitListView(lvFiles);
 
             //check path
-            if (Directory.Exists((string)getFullPath(folderBrowserDialog)) == false)
+            if (Directory.Exists((string)GetFullPath(folderBrowserDialog)) == false)
             {
-                MessageBox.Show(ReToolNaming.Properties.Resources.TextUI_DirectoryDoesNotExist);
+                MessageBox.Show(Resources.TextUI_DirectoryDoesNotExist);
             }
             else
             {
                 try
                 {
-                    string[] stringFiles = getFiles(getFullPath(folderBrowserDialog), searchPattern, SearchOption.TopDirectoryOnly);
+                    string[] stringFiles = GetFiles(GetFullPath(folderBrowserDialog), searchPattern, SearchOption.TopDirectoryOnly);
                     string stringFileName = "";
                     DateTime dtModifyDate;
                     Int64 lFileSize = 0;
@@ -181,18 +177,18 @@ namespace ReToolNaming.Classes
 
                         //create listview data
                         lvData[0] = RenameUtils.GetPathName(stringFileName);
-                        lvData[1] = RenameUtils.formatSize(lFileSize);
+                        lvData[1] = RenameUtils.FormatSize(lFileSize);
 
                         //check if file is in local current day light saving time
                         if (TimeZone.CurrentTimeZone.IsDaylightSavingTime(dtModifyDate) == false)
                         {
                             //not in day light saving time adjust time
-                            lvData[2] = RenameUtils.formatDate(dtModifyDate.AddHours(1));
+                            lvData[2] = RenameUtils.FormatDate(dtModifyDate.AddHours(1));
                         }
                         else
                         {
                             //not in day light saving time adjust time
-                            lvData[2] = RenameUtils.formatDate(dtModifyDate);
+                            lvData[2] = RenameUtils.FormatDate(dtModifyDate);
                         }
 
                         //Create actual list item
@@ -204,15 +200,15 @@ namespace ReToolNaming.Classes
                 }
                 catch (IOException e)
                 {
-                    MessageBox.Show(ReToolNaming.Properties.Resources.TextUI_Error_DriveNotReady + e.Message);
+                    MessageBox.Show(Resources.TextUI_Error_DriveNotReady + e.Message);
                 }
                 catch (UnauthorizedAccessException e)
                 {
-                    MessageBox.Show(ReToolNaming.Properties.Resources.TextUI_Error_DriveAccessDenied + e.Message);
+                    MessageBox.Show(Resources.TextUI_Error_DriveAccessDenied + e.Message);
                 }
                 catch (Exception e)
                 {
-                    MessageBox.Show(ReToolNaming.Properties.Resources.TextUI_Error + e.Message);
+                    MessageBox.Show(Resources.TextUI_Error + e.Message);
                 }
             }
 
@@ -231,10 +227,10 @@ namespace ReToolNaming.Classes
         {
             RenameUtils.ClearMatchStatus(lvFilesLeft);
             RenameUtils.ClearMatchStatus(lvFilesRight);
-            Log.addLogTextLine("Matching cleared.");
+            LogUtils.AddLogTextLine("Matching cleared.");
         }
 
-        public static void BehaveLikeRadioCheckBox(ListView lvFiles, ListViewItem checkedListVieeItem, ItemCheckedEventHandler lvFiles_ItemChecked)
+        public static void BehaveLikeRadioCheckBox(ListView lvFiles, ListViewItem checkedListVieeItem)
         {
             if (null == checkedListVieeItem) return; //small fix; sometimes 'e' was null.
 
@@ -333,7 +329,7 @@ namespace ReToolNaming.Classes
         {
             RenameUtils.ClearMathingLeftRight(lvFilesLeft, lvFilesRight);
             if (!flagUseComplexRegex) strRegex = ".*";
-            Log.addLogTextLine("Auto matching operation " + (flagUseComplexRegex ? "with " : "without ") + "regex support " + (flagUseFastRendering ? "using " : "not using ") + "fast rendering.");
+            LogUtils.AddLogTextLine("Auto matching operation " + (flagUseComplexRegex ? "with " : "without ") + "regex support " + (flagUseFastRendering ? "using " : "not using ") + "fast rendering.");
             pbProgres.Value = 0;
             foreach (ListViewItem lvItem in lvFilesLeft.Items)
             {
@@ -381,7 +377,7 @@ namespace ReToolNaming.Classes
 
         public void Rename(string strDirection, ListView lvFilesLeft, ListView lvFilesRight, FolderBrowserDialog folderBrowserDialog, string strSearchPatternLeft, string strSearchPatternRight)
         {
-            if (MessageBox.Show(ReToolNaming.Properties.Resources.TextUI_RenameOperationWarning, ReToolNaming.Properties.Resources.TextUI_Warning, MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
+            if (MessageBox.Show(Resources.TextUI_RenameOperationWarning, Resources.TextUI_Warning, MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
             {
                 foreach (ListViewItem lvItemLeft in lvFilesLeft.Items)
                 {
@@ -389,25 +385,25 @@ namespace ReToolNaming.Classes
                     {
                         if (lvItemLeft.SubItems[3].Text == lvItemRight.SubItems[3].Text && lvItemLeft.SubItems[3].Text.Length > 0)
                         {
-                            FileInfo fileInfoLeft = new FileInfo(RenameUtils.getFullPath(folderBrowserDialog) + "\\" + lvItemLeft.Text);
+                            FileInfo fileInfoLeft = new FileInfo(RenameUtils.GetFullPath(folderBrowserDialog) + "\\" + lvItemLeft.Text);
                             string strLeftFileNameOnly = fileInfoLeft.Name;
                             strLeftFileNameOnly = strLeftFileNameOnly.Replace(fileInfoLeft.Extension.ToString(), "");
 
-                            FileInfo fileInfoRight = new FileInfo(RenameUtils.getFullPath(folderBrowserDialog) + "\\" + lvItemRight.Text);
+                            FileInfo fileInfoRight = new FileInfo(RenameUtils.GetFullPath(folderBrowserDialog) + "\\" + lvItemRight.Text);
                             string strRightFileNameOnly = fileInfoRight.Name;
                             strRightFileNameOnly = strRightFileNameOnly.Replace(fileInfoRight.Extension.ToString(), "");
 
                             if (strDirection == DIRECTION_LEFT)
                             {
                                 File.Move(fileInfoRight.FullName, fileInfoRight.Directory.FullName + "\\" + strLeftFileNameOnly + fileInfoRight.Extension);
-                                Log.addLogTextLine("Renamed " + fileInfoRight.FullName + " to " + fileInfoRight.Directory.FullName + "\\" + strLeftFileNameOnly + fileInfoRight.Extension);
+                                LogUtils.AddLogTextLine("Renamed " + fileInfoRight.FullName + " to " + fileInfoRight.Directory.FullName + "\\" + strLeftFileNameOnly + fileInfoRight.Extension);
                                 lvItemLeft.SubItems[3].Text = "";
                                 lvItemRight.SubItems[3].Text = "";
                             }
                             else
                             {
                                 File.Move(fileInfoLeft.FullName, fileInfoLeft.Directory.FullName + "\\" + strRightFileNameOnly + fileInfoLeft.Extension);
-                                Log.addLogTextLine("Renamed " + fileInfoLeft.FullName + " to " + fileInfoLeft.Directory.FullName + "\\" + strRightFileNameOnly + fileInfoLeft.Extension);
+                                LogUtils.AddLogTextLine("Renamed " + fileInfoLeft.FullName + " to " + fileInfoLeft.Directory.FullName + "\\" + strRightFileNameOnly + fileInfoLeft.Extension);
                                 lvItemLeft.SubItems[3].Text = "";
                                 lvItemRight.SubItems[3].Text = "";
                             }

@@ -1,35 +1,32 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Collections;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using System.Management;
-using System.Globalization;
 using System.IO;
-using ReToolNaming.Classes;
-using System.Text.RegularExpressions;
 using System.Reflection;
-using System.Configuration;
+using Classes;
 
-namespace ReToolNaming
+namespace MatchSubs4Vids
 {
     public partial class MainForm : Form
     {
-        private RenameUtils renameUtils;
-        private bool pathViaAppParams = false;
-
-        private ConsoleLog consolelog;
+        private readonly RenameUtils renameUtils;
+        private readonly ConsoleLogForm consoleLogForm;
         
+        private bool pathViaAppParams = false;
+                
         public MainForm(string path)
         {
             InitializeComponent();
 
-            string VersionNumber = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            this.Text = "ReToolNaming (v" + VersionNumber + ")";
+            consoleLogForm = new ConsoleLogForm
+            {
+                StartPosition = FormStartPosition.CenterParent
+            };
+            consoleLogForm.Hide();
+
+            //Handle version title.
+            string VersionNumber = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            Text = "MatchSubs4Vids (v" + VersionNumber + ")";
 
             renameUtils = new RenameUtils();
             renameUtils.InitializeUtils() ;
@@ -47,18 +44,13 @@ namespace ReToolNaming
                 folderBrowserDialog1.SelectedPath = path;
                 LoadTargetDirectory();
             }
-
-            consolelog = new ConsoleLog();
-            consolelog.StartPosition = FormStartPosition.CenterParent;
-            consolelog.Hide();
         }
 
         private void StartAutomaticDownloadSubtitles()
         {
             pbProgress.Value = 0;
-            //consolelog.StartPosition = FormStartPosition.CenterParent;
-            consolelog.lConsoleLog.Text = "Wait. Procesing...";
-            consolelog.Show();
+            consoleLogForm.lConsoleLog.Text = "Wait. Procesing...";
+            consoleLogForm.Show();
 
             bgWorker.RunWorkerAsync();
         }
@@ -68,18 +60,19 @@ namespace ReToolNaming
             string[] args = new string[3];
 
             args[0] = folderBrowserDialog1.SelectedPath.ToString();
-            args[1] = Properties.Settings.Default.OPEN_SUBTITLES_USERNAME;
-            args[2] = Properties.Settings.Default.OPEN_SUBTITLES_PASSWORD;
+            args[1] = Properties.Settings.Default.OPEN_SUBTITLES_DOWNLOAD_LANGUAGES;
+            args[2] = Properties.Settings.Default.OPEN_SUBTITLES_USERNAME;
+            args[3] = Properties.Settings.Default.OPEN_SUBTITLES_PASSWORD;
 
-            e.Result = AutoDownloadSubtitle.ASD.Start(args) + "\r\nPres SPACE / ESC / ENTER to close this message";
+            e.Result = AutoSubtitleDownloader.ASD.Start(args) + "\r\nPres SPACE / ESC / ENTER to close this message";
         }
 
         private void bgWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            consolelog.lConsoleLog.Text = e.Result.ToString();
+            consoleLogForm.lConsoleLog.Text = e.Result.ToString();
             
-            consolelog.lConsoleLog.SelectionStart = consolelog.lConsoleLog.TextLength;
-            consolelog.lConsoleLog.ScrollToCaret();
+            consoleLogForm.lConsoleLog.SelectionStart = consoleLogForm.lConsoleLog.TextLength;
+            consoleLogForm.lConsoleLog.ScrollToCaret();
 
             pbProgress.Value = 100;
             bFilterRight.PerformClick();
@@ -94,7 +87,7 @@ namespace ReToolNaming
         {
             RenameUtils.PopulateFiles(lvFilesLeft, tbSearchPatternLeft.Text, folderBrowserDialog1);
             RenameUtils.PopulateFiles(lvFilesRight, tbSearchPatternRight.Text, folderBrowserDialog1);
-            Log.addLogTextLine("Populating form with content from path: " + RenameUtils.getFullPath(folderBrowserDialog1).ToString());
+            LogUtils.AddLogTextLine("Populating form with content from path: " + RenameUtils.GetFullPath(folderBrowserDialog1).ToString());
             AutoDetectAutoMatchListViews();
         }
 
@@ -103,9 +96,9 @@ namespace ReToolNaming
             lStatus.Text = append ? (!lStatus.Text.Contains(message) ? lStatus.Text + message : lStatus.Text) : message;
         }
       
-        private void Form1_Load(object sender, EventArgs e)
+        private void MainForm_Load(object sender, EventArgs e)
         {
-            Log.addLogTextLine("Application opened.");
+            LogUtils.AddLogTextLine("Application opened.");
             LoadTargetDirectory();
         }
 
@@ -127,7 +120,7 @@ namespace ReToolNaming
         private void Match()
         {
             renameUtils.MatchLeftRight(lvFilesLeft, lvFilesRight);
-            Log.addLogTextLine("Manually matched files");
+            LogUtils.AddLogTextLine("Manually matched files");
         }
 
         private void bRenameFromLeft_Click(object sender, EventArgs e)
@@ -177,12 +170,12 @@ namespace ReToolNaming
 
         private void lvFilesLeft_ItemChecked(object sender, ItemCheckedEventArgs e)
         {
-            RenameUtils.BehaveLikeRadioCheckBox(lvFilesLeft, e.Item, lvFilesLeft_ItemChecked);
+            RenameUtils.BehaveLikeRadioCheckBox(lvFilesLeft, e.Item);
         }
 
         private void lvFilesRight_ItemChecked(object sender, ItemCheckedEventArgs e)
         {
-            RenameUtils.BehaveLikeRadioCheckBox(lvFilesRight, e.Item, lvFilesRight_ItemChecked);
+            RenameUtils.BehaveLikeRadioCheckBox(lvFilesRight, e.Item);
         }
 
         private void Form1_DragDrop(object sender, DragEventArgs e)
@@ -207,7 +200,7 @@ namespace ReToolNaming
                 {
                     RenameUtils.PopulateFiles(lvFilesLeft, tbSearchPatternLeft.Text, folderBrowserDialog1);
                     RenameUtils.PopulateFiles(lvFilesRight, tbSearchPatternRight.Text, folderBrowserDialog1);
-                    Log.addLogTextLine("Populating form with content from path: " + RenameUtils.getFullPath(folderBrowserDialog1).ToString());
+                    LogUtils.AddLogTextLine("Populating form with content from path: " + RenameUtils.GetFullPath(folderBrowserDialog1).ToString());
                     break;
                 }
             }
@@ -224,7 +217,7 @@ namespace ReToolNaming
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Log.addLogTextLine("Application closed.");
+            LogUtils.AddLogTextLine("Application closed.");
         }
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
@@ -306,11 +299,6 @@ namespace ReToolNaming
             lHelp.Show();
         }
 
-        private void statusStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
-        {
-
-        }
-
         private void bASD_Click(object sender, EventArgs e)
         {
             StartAutomaticDownloadSubtitles();
@@ -318,7 +306,12 @@ namespace ReToolNaming
 
         private void MainForm_Click(object sender, EventArgs e)
         {
-            if (consolelog.Visible) consolelog.Hide();
+            if (consoleLogForm.Visible) consoleLogForm.Hide();
+        }
+
+        private void MainForm_Resize(object sender, EventArgs e)
+        {
+            splitContainer1.SplitterDistance = Size.Height - 140;
         }
     }
 }

@@ -8,11 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ReToolNaming
+namespace MatchSubs4Vids
 {
-    public partial class ConsoleLog : Form
+    public partial class ConsoleLogForm : Form
     {
-        public ConsoleLog()
+        public ConsoleLogForm()
         {
             InitializeComponent();
         }

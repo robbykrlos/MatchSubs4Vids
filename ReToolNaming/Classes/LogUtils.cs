@@ -1,18 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
 using System.Reflection;
-using System.Windows.Forms;
 
-namespace ReToolNaming.Classes
+namespace Classes
 {
-    public static class Log
+    public static class LogUtils
     {
-        private const string LOG_FILE_NAME = "log.txt";
+        private static readonly string APP_START_TIME = DateTime.Now.ToString("yyyy-MM-dd_HHmmss").ToString();
+        private static readonly string LOG_FILE_NAME = APP_START_TIME + "_log.txt";
 
-        public static void addLogTextLine(string strLogTextLine)
+        public static void AddLogTextLine(string strLogTextLine)
         {
             try //in case WIN 7 special permissions blocks the file, skipp.
             {
