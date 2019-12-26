@@ -152,8 +152,8 @@
             this.lvFilesLeft.UseCompatibleStateImageBehavior = false;
             this.lvFilesLeft.View = System.Windows.Forms.View.Details;
             this.lvFilesLeft.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.lvFilesLeft_ItemChecked);
-            this.lvFilesLeft.DragDrop += new System.Windows.Forms.DragEventHandler(this.Form1_DragDrop);
-            this.lvFilesLeft.DragEnter += new System.Windows.Forms.DragEventHandler(this.Form1_DragEnter);
+            this.lvFilesLeft.DragDrop += new System.Windows.Forms.DragEventHandler(this.MainForm_DragDrop);
+            this.lvFilesLeft.DragEnter += new System.Windows.Forms.DragEventHandler(this.MainForm_DragEnter);
             // 
             // lHelp
             // 
@@ -181,8 +181,8 @@
             this.lvFilesRight.UseCompatibleStateImageBehavior = false;
             this.lvFilesRight.View = System.Windows.Forms.View.Details;
             this.lvFilesRight.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.lvFilesRight_ItemChecked);
-            this.lvFilesRight.DragDrop += new System.Windows.Forms.DragEventHandler(this.Form1_DragDrop);
-            this.lvFilesRight.DragEnter += new System.Windows.Forms.DragEventHandler(this.Form1_DragEnter);
+            this.lvFilesRight.DragDrop += new System.Windows.Forms.DragEventHandler(this.MainForm_DragDrop);
+            this.lvFilesRight.DragEnter += new System.Windows.Forms.DragEventHandler(this.MainForm_DragEnter);
             // 
             // menuStrip1
             // 
@@ -225,21 +225,27 @@
             this.pbProgress});
             this.statusStrip1.Location = new System.Drawing.Point(0, 74);
             this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
             this.statusStrip1.Size = new System.Drawing.Size(1316, 22);
+            this.statusStrip1.SizingGrip = false;
             this.statusStrip1.TabIndex = 12;
             this.statusStrip1.Text = "statusStrip1";
             // 
             // lStatus
             // 
             this.lStatus.Name = "lStatus";
-            this.lStatus.Size = new System.Drawing.Size(651, 17);
+            this.lStatus.RightToLeftAutoMirrorImage = true;
+            this.lStatus.Size = new System.Drawing.Size(1168, 17);
+            this.lStatus.Spring = true;
             this.lStatus.Text = "Drag&&Drop below the folder you want to target, OR have the path copied in clipbo" +
     "ard (copy/paste) OR used F4 to select it.";
+            this.lStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // pbProgress
             // 
             this.pbProgress.Name = "pbProgress";
             this.pbProgress.Size = new System.Drawing.Size(100, 16);
+            this.pbProgress.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             // 
             // cbRegexes
             // 
@@ -277,7 +283,7 @@
             this.bClearMatching.TabStop = false;
             this.bClearMatching.Text = "Clear mathcing (F8)";
             this.bClearMatching.UseVisualStyleBackColor = true;
-            this.bClearMatching.Click += new System.EventHandler(this.button1_Click);
+            this.bClearMatching.Click += new System.EventHandler(this.bClearMatching_Click);
             // 
             // cbUseComplexRegex
             // 
@@ -432,13 +438,13 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
             this.Text = "MatchSubs4Vids";
-            this.Activated += new System.EventHandler(this.Form1_Activated);
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
+            this.Activated += new System.EventHandler(this.MainForm_Activated);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.Click += new System.EventHandler(this.MainForm_Click);
-            this.DragDrop += new System.Windows.Forms.DragEventHandler(this.Form1_DragDrop);
-            this.DragEnter += new System.Windows.Forms.DragEventHandler(this.Form1_DragEnter);
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
+            this.DragDrop += new System.Windows.Forms.DragEventHandler(this.MainForm_DragDrop);
+            this.DragEnter += new System.Windows.Forms.DragEventHandler(this.MainForm_DragEnter);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
             this.Resize += new System.EventHandler(this.MainForm_Resize);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();
@@ -488,9 +494,9 @@
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel lStatus;
-        private System.Windows.Forms.ToolStripProgressBar pbProgress;
         private System.Windows.Forms.Button bASD;
         protected System.ComponentModel.BackgroundWorker bgWorker;
+        public System.Windows.Forms.ToolStripProgressBar pbProgress;
     }
 }
 

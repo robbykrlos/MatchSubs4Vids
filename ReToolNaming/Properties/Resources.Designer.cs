@@ -61,6 +61,26 @@ namespace MatchSubs4Vids.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon ico_rename {
+            get {
+                object obj = ResourceManager.GetObject("ico_rename", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon icon_asd {
+            get {
+                object obj = ResourceManager.GetObject("icon_asd", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Directory or path does not exist..
         /// </summary>
         internal static string TextUI_DirectoryDoesNotExist {

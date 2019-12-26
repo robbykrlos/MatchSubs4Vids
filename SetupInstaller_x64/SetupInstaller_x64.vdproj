@@ -3,7 +3,7 @@
 "VSVersion" = "3:800"
 "ProjectType" = "8:{978C614F-708E-4E1A-B201-565925725DBA}"
 "IsWebType" = "8:FALSE"
-"ProjectName" = "8:Setup_ReToolNaming"
+"ProjectName" = "8:SetupInstaller_x64"
 "LanguageId" = "3:1033"
 "CodePage" = "3:1252"
 "UILanguageId" = "3:1033"
@@ -21,20 +21,26 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_7E5629F86F554B1C813AFCBAA67CA751"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_A7756D9D28CC4EE5A8B4E124ACBCFA72"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
+        "MsmKey" = "8:_BFAF05C9A04C659945D545647DCBE413"
+        "OwnerKey" = "8:_A7756D9D28CC4EE5A8B4E124ACBCFA72"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_A7756D9D28CC4EE5A8B4E124ACBCFA72"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_BFAF05C9A04C659945D545647DCBE413"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -45,11 +51,11 @@
         "DisplayName" = "8:Debug"
         "IsDebugOnly" = "11:TRUE"
         "IsReleaseOnly" = "11:FALSE"
-        "OutputFilename" = "8:Debug\\Setup_ReToolNaming.msi"
+        "OutputFilename" = "8:Debug\\SetupMatchSubs4Vids.msi"
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
-        "Compression" = "3:2"
+        "Compression" = "3:3"
         "SignOutput" = "11:FALSE"
         "CertificateFile" = "8:"
         "PrivateKeyFile" = "8:"
@@ -64,15 +70,10 @@
             "ComponentsUrl" = "8:"
                 "Items"
                 {
-                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.Net.Framework.3.5"
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.8"
                     {
-                    "Name" = "8:.NET Framework 3.5"
-                    "ProductCode" = "8:Microsoft.Net.Framework.3.5"
-                    }
-                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.Windows.Installer.3.1"
-                    {
-                    "Name" = "8:Windows Installer 3.1"
-                    "ProductCode" = "8:Microsoft.Windows.Installer.3.1"
+                    "Name" = "8:Microsoft .NET Framework 4.8 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.8"
                     }
                 }
             }
@@ -82,11 +83,11 @@
         "DisplayName" = "8:Release"
         "IsDebugOnly" = "11:FALSE"
         "IsReleaseOnly" = "11:TRUE"
-        "OutputFilename" = "8:Release\\Setup_ReToolNaming.msi"
+        "OutputFilename" = "8:Release\\MatchSubs4Vids_Setup_x64.msi"
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
-        "Compression" = "3:2"
+        "Compression" = "3:3"
         "SignOutput" = "11:FALSE"
         "CertificateFile" = "8:"
         "PrivateKeyFile" = "8:"
@@ -101,15 +102,10 @@
             "ComponentsUrl" = "8:"
                 "Items"
                 {
-                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.Net.Framework.3.5"
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.8"
                     {
-                    "Name" = "8:.NET Framework 3.5"
-                    "ProductCode" = "8:Microsoft.Net.Framework.3.5"
-                    }
-                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.Windows.Installer.3.1"
-                    {
-                    "Name" = "8:Windows Installer 3.1"
-                    "ProductCode" = "8:Microsoft.Windows.Installer.3.1"
+                    "Name" = "8:Microsoft .NET Framework 4.8 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.8"
                     }
                 }
             }
@@ -134,7 +130,7 @@
                 {
                 "Name" = "8:.NET Framework"
                 "Message" = "8:[VSDNETMSG]"
-                "Version" = "8:3.5.21022"
+                "FrameworkVersion" = "8:.NETFramework,Version=v4.8"
                 "AllowLaterVersions" = "11:FALSE"
                 "InstallUrl" = "8:http://go.microsoft.com/fwlink/?LinkId=76617"
                 }
@@ -162,16 +158,27 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7E5629F86F554B1C813AFCBAA67CA751"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_BFAF05C9A04C659945D545647DCBE413"
             {
-            "SourcePath" = "8:uninstall.ico"
-            "TargetName" = "8:uninstall.ico"
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:AutoSubtitleDownloader, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_BFAF05C9A04C659945D545647DCBE413"
+                    {
+                    "Name" = "8:AutoSubtitleDownloader.dll"
+                    "Attributes" = "3:513"
+                    }
+                }
+            "SourcePath" = "8:AutoSubtitleDownloader.dll"
+            "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_9580AB218B3D47D6AA79385AF3685C06"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
+            "ReadOnly" = "11:TRUE"
             "Hidden" = "11:FALSE"
             "System" = "11:FALSE"
             "Permanent" = "11:FALSE"
@@ -179,7 +186,7 @@
             "PackageAs" = "3:1"
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
         }
@@ -201,7 +208,7 @@
             }
             "{3C67513D-01DD-4637-8A68-80971EB9504F}:_9580AB218B3D47D6AA79385AF3685C06"
             {
-            "DefaultLocation" = "8:[ProgramFilesFolder][Manufacturer]\\[ProductName]"
+            "DefaultLocation" = "8:[ProgramFiles64Folder][Manufacturer]\\[ProductName]"
             "Name" = "8:#1925"
             "AlwaysCreate" = "11:FALSE"
             "Condition" = "8:"
@@ -222,7 +229,7 @@
                 {
                     "{9EF0B969-E518-4E46-987F-47570745A589}:_55874C9D16DF4E4B8D78A3BC8296F5A8"
                     {
-                    "Name" = "8:ReToolNaming"
+                    "Name" = "8:MatchSubs4Vids"
                     "AlwaysCreate" = "11:FALSE"
                     "Condition" = "8:"
                     "Transitive" = "11:FALSE"
@@ -248,29 +255,30 @@
         "Product"
         {
         "Name" = "8:Microsoft Visual Studio"
-        "ProductName" = "8:ReToolNaming"
-        "ProductCode" = "8:{30C297E6-5622-4F40-9FEA-D052D38EF0A3}"
-        "PackageCode" = "8:{8A7BABB8-DCB5-4B6A-8296-43EA263D7F21}"
+        "ProductName" = "8:MatchSubs4Vids"
+        "ProductCode" = "8:{7B1F121F-49D9-4737-B6E4-016246169FDF}"
+        "PackageCode" = "8:{AC92CDAB-76C4-4139-93C5-5C6F563C530A}"
         "UpgradeCode" = "8:{DB500710-D86C-4F46-97E0-B26C43E89012}"
+        "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
-        "RemovePreviousVersions" = "11:FALSE"
+        "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:2.0.6"
-        "Manufacturer" = "8:Drobota Florin-Robert"
+        "ProductVersion" = "8:2.2.0"
+        "Manufacturer" = "8:CRK"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
-        "Title" = "8:Setup_ReToolNaming"
+        "Title" = "8:Setup MatchSubs4Vids"
         "Subject" = "8:"
-        "ARPCONTACT" = "8:Drobota Florin-Robert"
-        "Keywords" = "8:"
-        "ARPCOMMENTS" = "8:File renaming tool"
+        "ARPCONTACT" = "8:CRK"
+        "Keywords" = "8:rename,subtitle,downloader"
+        "ARPCOMMENTS" = "8:Subtitles ranaming tool that matches the viudeo files with existing subtitles or downloads new ones from OpenSubtitles.org"
         "ARPURLINFOABOUT" = "8:"
-        "ARPPRODUCTICON" = "8:"
+        "ARPPRODUCTICON" = "8:_63080A21091E484ABFAE8D0BE2E2A543"
         "ARPIconIndex" = "3:0"
         "SearchPath" = "8:"
         "UseSystemSearchPath" = "11:TRUE"
-        "TargetPlatform" = "3:0"
+        "TargetPlatform" = "3:1"
         "PreBuildEvent" = "8:"
         "PostBuildEvent" = "8:"
         "RunPostBuildEvent" = "3:0"
@@ -371,7 +379,7 @@
         {
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_6FEDE9E0ED494797AF3482A2D5C2CBEE"
             {
-            "Name" = "8:ReToolNaming"
+            "Name" = "8:MatchSubs4Vids"
             "Arguments" = "8:"
             "Description" = "8:"
             "ShowCmd" = "3:1"
@@ -383,23 +391,9 @@
             "Icon" = "8:_63080A21091E484ABFAE8D0BE2E2A543"
             "Feature" = "8:"
             }
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_B73806059F3E4249B028A56FB3F82678"
-            {
-            "Name" = "8:Uninstall"
-            "Arguments" = "8:/u 30C297E6-5622-4F40-9FEA-D052D38EF0A3"
-            "Description" = "8:"
-            "ShowCmd" = "3:1"
-            "IconIndex" = "3:0"
-            "Transitive" = "11:FALSE"
-            "Target" = "8:_A7756D9D28CC4EE5A8B4E124ACBCFA72"
-            "Folder" = "8:_55874C9D16DF4E4B8D78A3BC8296F5A8"
-            "WorkingFolder" = "8:_9580AB218B3D47D6AA79385AF3685C06"
-            "Icon" = "8:_7E5629F86F554B1C813AFCBAA67CA751"
-            "Feature" = "8:"
-            }
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_C72BB0FB3D9741BCACD50F069AC32360"
             {
-            "Name" = "8:ReToolNaming"
+            "Name" = "8:MatchSubs4Vids"
             "Arguments" = "8:"
             "Description" = "8:"
             "ShowCmd" = "3:1"
@@ -409,20 +403,6 @@
             "Folder" = "8:_55874C9D16DF4E4B8D78A3BC8296F5A8"
             "WorkingFolder" = "8:_9580AB218B3D47D6AA79385AF3685C06"
             "Icon" = "8:_63080A21091E484ABFAE8D0BE2E2A543"
-            "Feature" = "8:"
-            }
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_D2480EFB8D7C4A3AA1703519E5DCA13B"
-            {
-            "Name" = "8:Uninstall"
-            "Arguments" = "8:/u 30C297E6-5622-4F40-9FEA-D052D38EF0A3"
-            "Description" = "8:"
-            "ShowCmd" = "3:1"
-            "IconIndex" = "3:0"
-            "Transitive" = "11:FALSE"
-            "Target" = "8:_A7756D9D28CC4EE5A8B4E124ACBCFA72"
-            "Folder" = "8:_9580AB218B3D47D6AA79385AF3685C06"
-            "WorkingFolder" = "8:_9580AB218B3D47D6AA79385AF3685C06"
-            "Icon" = "8:_7E5629F86F554B1C813AFCBAA67CA751"
             "Feature" = "8:"
             }
         }
@@ -826,7 +806,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_A7756D9D28CC4EE5A8B4E124ACBCFA72"
             {
-            "SourcePath" = "8:..\\ReToolNaming\\obj\\Debug\\ReToolNaming.exe"
+            "SourcePath" = "8:..\\ReToolNaming\\obj\\x64\\Release_x64\\MatchSubs4Vids.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_9580AB218B3D47D6AA79385AF3685C06"

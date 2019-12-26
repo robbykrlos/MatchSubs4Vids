@@ -12,9 +12,25 @@ namespace MatchSubs4Vids
 {
     public partial class ConsoleLogForm : Form
     {
-        public ConsoleLogForm()
+        private readonly MainForm mainForm;
+
+        //avoid showing "X" close button.
+        private const int CS_NOCLOSE = 0x200;
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams mdiCp = base.CreateParams;
+                mdiCp.ClassStyle = mdiCp.ClassStyle | CS_NOCLOSE;
+
+                return mdiCp;
+            }
+        }
+
+        public ConsoleLogForm(MainForm parentMainForm)
         {
             InitializeComponent();
+            this.mainForm = parentMainForm;
         }
 
         public void ShowMsg(string message)
@@ -23,18 +39,6 @@ namespace MatchSubs4Vids
 
             lConsoleLog.SelectionStart = lConsoleLog.TextLength;
             lConsoleLog.ScrollToCaret();
-
-            //this.ShowDialog();
-        }
-
-        public void AppendShowMsg(string message)
-        {
-            lConsoleLog.Text += message;
-
-            lConsoleLog.SelectionStart = lConsoleLog.TextLength;
-            lConsoleLog.ScrollToCaret();
-
-            //this.ShowDialog();
         }
 
         private void ConsoleLog_KeyDown(object sender, KeyEventArgs e)
@@ -42,6 +46,7 @@ namespace MatchSubs4Vids
             if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Escape || e.KeyCode == Keys.Space)
             {
                 this.Hide();
+                this.mainForm.pbProgress.Value = 0;
             }
         }
     }

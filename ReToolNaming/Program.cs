@@ -13,36 +13,25 @@ namespace MatchSubs4Vids
         static void Main()
         {
             string[] arrArgs = Environment.GetCommandLineArgs();
-            string cmdLineArg = "";
             string path = "";
-            for (int i = 0; i < arrArgs.Length; i++   ){
+            for (int i = 0; i < arrArgs.Length; i++)
+            {
                 string arg = arrArgs[i];
 
                 switch (arg)
                 {
-                    case "/u":
-                        i++;
-                        if (i < arrArgs.Length) cmdLineArg += "/x{" + arrArgs[i] + "}";
-                        break;
-
                     case "/path":
-                        i++;
-                        if (i < arrArgs.Length) path += arrArgs[i];
+                        if (i < arrArgs.Length)
+                        {
+                            path += arrArgs[++i];
+                        }
                         break;
                 }
             }
 
-            if (cmdLineArg != "")
-            {
-                Process.Start("msiexec.exe", cmdLineArg);
-                Application.Exit();
-            }
-            else
-            {
-                Application.EnableVisualStyles();
-                Application.SetCompatibleTextRenderingDefault(false);
-                Application.Run(new MainForm(path));
-            }
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new MainForm(path));
         }
     }
 }

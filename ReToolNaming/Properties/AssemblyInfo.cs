@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Resources;
 
@@ -7,11 +6,11 @@ using System.Resources;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("MatchSubs4Vids")]
-[assembly: AssemblyDescription("Small tool for renaming files after other files, keeping the original extension. Useful in renaming subtitles or movies.")]
+[assembly: AssemblyDescription("Lightweithg tool for renaming files after other files, keeping the original extension. Useful in renaming subtitles or movies, one after the other. It also includes a subtitle downloader using the OpenSubtitle.org API integrated using the ASD library.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("CRK")]
 [assembly: AssemblyProduct("MatchSubs4Vids")]
-[assembly: AssemblyCopyright("Copyright ©  2012")]
+[assembly: AssemblyCopyright("Copyright ©  2012 - 2020")]
 [assembly: AssemblyTrademark("CRK")]
 [assembly: AssemblyCulture("")]
 

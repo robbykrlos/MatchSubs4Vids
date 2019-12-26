@@ -48,24 +48,23 @@
             this.lConsoleLog.TabIndex = 0;
             this.lConsoleLog.Text = "Wait. Processing...";
             // 
-            // ConsoleLog
+            // ConsoleLogForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScroll = true;
             this.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.ControlBox = false;
             this.Controls.Add(this.lConsoleLog);
             this.ForeColor = System.Drawing.Color.Lime;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "ConsoleLog";
-            this.ShowInTaskbar = false;
+            this.Name = "ConsoleLogForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "ConsoleLog";
+            this.Text = "Auto Subtitle Downloader  - console log";
             this.TopMost = true;
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ConsoleLog_KeyDown);
             this.ResumeLayout(false);

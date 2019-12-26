@@ -13,30 +13,27 @@ namespace MatchSubs4Vids
         private readonly ConsoleLogForm consoleLogForm;
         
         private bool pathViaAppParams = false;
-                
+
         public MainForm(string path)
         {
             InitializeComponent();
 
-            consoleLogForm = new ConsoleLogForm
+            consoleLogForm = new ConsoleLogForm(this)
             {
                 StartPosition = FormStartPosition.CenterParent
             };
             consoleLogForm.Hide();
 
             //Handle version title.
-            string VersionNumber = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            string LongVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            string VersionNumber = LongVersion.Substring(0, LongVersion.Length-2);
             Text = "MatchSubs4Vids (v" + VersionNumber + ")";
 
             renameUtils = new RenameUtils();
             renameUtils.InitializeUtils() ;
-            tbSearchPatternLeft.Text = "*.avi|*.mkv|*.mp4|*.m2ts";
-            tbSearchPatternRight.Text = "*.srt|*.sub|*.str";
-
+            renameUtils.LoadFilters(tbSearchPatternLeft, tbSearchPatternRight);
             renameUtils.LoadRegexesIntoComboBox(cbRegexes);
 
-            lvFilesLeft.AllowDrop = true;
-            lvFilesRight.AllowDrop = true;
             if (path.Length > 0 && Directory.Exists(path))
             {
                 DisplayStatus("Directory from startup parameter /path exists - " + path + " - preloading data", false);
@@ -52,12 +49,17 @@ namespace MatchSubs4Vids
             consoleLogForm.lConsoleLog.Text = "Wait. Procesing...";
             consoleLogForm.Show();
 
+            //correction on ConsoleLogForm placement.
+            int x = this.DesktopBounds.Left + (this.Width - consoleLogForm.Width) / 2;
+            int y = this.DesktopBounds.Top + (this.Height - consoleLogForm.Height) / 2;
+            consoleLogForm.SetDesktopLocation(x, y);
+
             bgWorker.RunWorkerAsync();
         }
 
         private void bgWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            string[] args = new string[3];
+            string[] args = new string[4];
 
             args[0] = folderBrowserDialog1.SelectedPath.ToString();
             args[1] = Properties.Settings.Default.OPEN_SUBTITLES_DOWNLOAD_LANGUAGES;
@@ -163,7 +165,7 @@ namespace MatchSubs4Vids
             cbRegexes.Enabled = cbUseComplexRegex.Checked;
         }
 
-        private void button1_Click(object sender, EventArgs e)//Clear matches.
+        private void bClearMatching_Click(object sender, EventArgs e)//Clear matches.
         {
             RenameUtils.ClearMathingLeftRight(lvFilesLeft, lvFilesRight);
         }
@@ -178,7 +180,7 @@ namespace MatchSubs4Vids
             RenameUtils.BehaveLikeRadioCheckBox(lvFilesRight, e.Item);
         }
 
-        private void Form1_DragDrop(object sender, DragEventArgs e)
+        private void MainForm_DragDrop(object sender, DragEventArgs e)
         {
             string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
 
@@ -207,7 +209,7 @@ namespace MatchSubs4Vids
             
         }
 
-        private void Form1_DragEnter(object sender, DragEventArgs e)
+        private void MainForm_DragEnter(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop, false) == true)
             {
@@ -215,13 +217,14 @@ namespace MatchSubs4Vids
             }  
         }
 
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             LogUtils.AddLogTextLine("Application closed.");
         }
 
-        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        private void MainForm_KeyDown(object sender, KeyEventArgs e)
         {
+            //handle global key shortcuts
             if (e.KeyCode == Keys.F4)
             {
                 folderBrowserDialog1.ShowDialog();
@@ -254,7 +257,7 @@ namespace MatchSubs4Vids
             }
         }
 
-        private void Form1_Activated(object sender, EventArgs e)
+        private void MainForm_Activated(object sender, EventArgs e)
         {
             if (this.pathViaAppParams)
             {

@@ -6,7 +6,7 @@ namespace Classes
 {
     public static class LogUtils
     {
-        private static readonly string APP_START_TIME = DateTime.Now.ToString("yyyy-MM-dd_HHmmss").ToString();
+        private static readonly string APP_START_TIME = DateTime.Now.ToString("yyyyMMdd").ToString();
         private static readonly string LOG_FILE_NAME = APP_START_TIME + "_log.txt";
 
         public static void AddLogTextLine(string strLogTextLine)

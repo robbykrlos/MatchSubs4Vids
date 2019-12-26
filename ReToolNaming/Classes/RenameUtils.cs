@@ -44,14 +44,20 @@ namespace Classes
             cbRegexes.ValueMember = "Value";
 
             var items = new[] {
-                new { Text =  "Used for S01E15 or s01e15 formats. ([sS]\\d+.[eE]\\d+)", Value ="[sS]\\d+.[eE]\\d+"},
-                new { Text = "Used for .0115. formats. (\\.\\d{3,4}\\.)", Value = "\\.\\d{3,4}\\." },
-                new { Text = "Generic number macther. (\\d*)", Value = "\\d*" }
+                new { Text =  "Used for S12E34 or s1e34 formats. ([sS]\\d{1,2}.[eE]\\d{1,2})", Value ="[sS]\\d{1,2}.[eE]\\d{1,2}"},
+                new { Text = "Used for .1234. or .123. formats. (\\.\\d{3,4}\\.)", Value = "\\.\\d{3,4}\\." },
+                new { Text = "Used for 12x34 or 1x23 formats. (\\d{1,2}[xX]\\d{1,2})", Value = "\\d{1,2}[xX]\\d{1,2}" }
             };
 
 
             cbRegexes.DataSource = items;
             cbRegexes.SelectedIndex = 0;
+        }
+
+        internal void LoadFilters(TextBox tbLeft, TextBox tbRight)
+        {
+            tbLeft.Text = "*.avi|*.mkv|*.mp4|*.m2ts";
+            tbRight.Text = "*.srt|*.sub|*.str";
         }
 
         public void InitializeUtils()
@@ -255,9 +261,16 @@ namespace Classes
             try
             {
                 if (String.Empty == strComplexRegex)
+                {
+                    //if there is no Regex set use a default one.
+                    //MessageBox.Show(string.Join(null, System.Text.RegularExpressions.Regex.Split(expr, "[^\\d$]")));
                     return string.Join(null, System.Text.RegularExpressions.Regex.Split(expr, "[^\\d$]"));
+                }
                 else
+                {
+                    //MessageBox.Show(System.Text.RegularExpressions.Regex.Match(expr, strComplexRegex).Value.ToString());
                     return System.Text.RegularExpressions.Regex.Match(expr, strComplexRegex).Value.ToString();
+                }
             } catch (Exception)
             {
                 //silence
