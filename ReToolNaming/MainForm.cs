@@ -39,7 +39,7 @@ namespace MatchSubs4Vids
                 DisplayStatus("Directory from startup parameter /path exists - " + path + " - preloading data", false);
                 this.pathViaAppParams = true;
                 folderBrowserDialog1.SelectedPath = path;
-                LoadTargetDirectory();
+                LoadTargetDirectory(true);
             }
         }
 
@@ -85,12 +85,12 @@ namespace MatchSubs4Vids
             pbProgress.Value++;
         }
 
-        private void LoadTargetDirectory()
+        private void LoadTargetDirectory(bool autoDetetect)
         {
             RenameUtils.PopulateFiles(lvFilesLeft, tbSearchPatternLeft.Text, folderBrowserDialog1);
             RenameUtils.PopulateFiles(lvFilesRight, tbSearchPatternRight.Text, folderBrowserDialog1);
             LogUtils.AddLogTextLine("Populating form with content from path: " + RenameUtils.GetFullPath(folderBrowserDialog1).ToString());
-            AutoDetectAutoMatchListViews();
+            if(autoDetetect) AutoDetectAutoMatchListViews();
         }
 
         private void DisplayStatus(string message, bool append)
@@ -101,7 +101,7 @@ namespace MatchSubs4Vids
         private void MainForm_Load(object sender, EventArgs e)
         {
             LogUtils.AddLogTextLine("Application opened.");
-            LoadTargetDirectory();
+            LoadTargetDirectory(false);
         }
 
         private void bFilterLeft_Click(object sender, EventArgs e)
@@ -140,17 +140,40 @@ namespace MatchSubs4Vids
             AutoDetectAutoMatchListViews();
         }
 
+        private void bDeepDetect_Click(object sender, EventArgs e)
+        {
+            DeepDetectAutoMatchListViews();
+        }
+
         private void AutoDetectAutoMatchListViews()
         {
             string regex = cbRegexes.SelectedValue == null ? cbRegexes.Text : cbRegexes.SelectedValue.ToString();
-            renameUtils.AutoMatchListViews(lvFilesLeft, lvFilesRight, pbProgress, cbUseComplexRegex.Checked, regex, cbSpeed.Checked);
+            int autoMatchResult = renameUtils.AutoMatchListViews(lvFilesLeft, lvFilesRight, pbProgress, cbUseComplexRegex.Checked, regex, cbSpeed.Checked, cbAutoClear.Checked);
+            lStatus.Text = "Auto Matched " + autoMatchResult.ToString() + " sub-vid pairs. ";
+            if (autoMatchResult == lvFilesLeft.Items.Count || autoMatchResult == lvFilesRight.Items.Count)
+            {
+                lStatus.Text += "FULL MATCH! ";
+            }
             lHelp.Hide();
+            //pbProgress.Value = 0;
+        }
+
+        private void DeepDetectAutoMatchListViews()
+        {
+            int deepMatchResult = renameUtils.DeepMatchListViews(lvFilesLeft, lvFilesRight, pbProgress, cbRegexes);
+            lStatus.Text = "Deep Matched " + deepMatchResult.ToString() + " sub-vid pairs. ";
+            if (deepMatchResult == lvFilesLeft.Items.Count || deepMatchResult == lvFilesRight.Items.Count)
+            {
+                lStatus.Text += "FULL MATCH! ";
+            }
+            lHelp.Hide();
+            //pbProgress.Value = 0;
         }
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             folderBrowserDialog1.ShowDialog();
-            LoadTargetDirectory();
+            LoadTargetDirectory(true);
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -225,12 +248,6 @@ namespace MatchSubs4Vids
         private void MainForm_KeyDown(object sender, KeyEventArgs e)
         {
             //handle global key shortcuts
-            if (e.KeyCode == Keys.F4)
-            {
-                folderBrowserDialog1.ShowDialog();
-                LoadTargetDirectory();
-            }
-
             if (e.KeyCode == Keys.F1)
             {
                 AutoDetectAutoMatchListViews();
@@ -238,7 +255,19 @@ namespace MatchSubs4Vids
 
             if (e.KeyCode == Keys.F2)
             {
-                AutoDetectAutoMatchListViews();
+                DeepDetectAutoMatchListViews();
+            }
+
+            if (e.KeyCode == Keys.F4)
+            {
+                folderBrowserDialog1.ShowDialog();
+                LoadTargetDirectory(true);
+            }
+
+            if (e.KeyCode == Keys.F5)
+            {
+                bFilterLeft.PerformClick();
+                bFilterRight.PerformClick();
             }
 
             if (e.KeyCode == Keys.F8)
@@ -254,6 +283,26 @@ namespace MatchSubs4Vids
             if (e.KeyCode == Keys.Enter)
             {
                     Match();
+            }
+
+            if (e.KeyCode == Keys.Add)
+            {
+                cbRegexes.SelectedIndex = cbRegexes.SelectedIndex < cbRegexes.Items.Count - 1 ? cbRegexes.SelectedIndex + 1 : 0;
+            }
+
+            if (e.KeyCode == Keys.Subtract)
+            {
+                cbRegexes.SelectedIndex = cbRegexes.SelectedIndex > 0 ? cbRegexes.SelectedIndex - 1 : cbRegexes.Items.Count - 1;
+            }
+
+            if (e.KeyCode == Keys.Multiply)
+            {
+                cbUseComplexRegex.Checked = !cbUseComplexRegex.Checked;
+            }
+
+            if (e.KeyCode == Keys.Divide)
+            {
+                cbAutoClear.Checked = !cbAutoClear.Checked;
             }
         }
 
@@ -273,7 +322,7 @@ namespace MatchSubs4Vids
                 {
                     DisplayStatus("Directory from clipboard exists - " + clipboardText + " - preloading data", false);
                     folderBrowserDialog1.SelectedPath = clipboardText;
-                    LoadTargetDirectory();
+                    LoadTargetDirectory(true);
                 }
             }
             else

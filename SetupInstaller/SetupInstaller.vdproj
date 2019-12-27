@@ -256,15 +256,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:MatchSubs4Vids"
-        "ProductCode" = "8:{83CF4969-06F1-4F2C-A4FA-7E670BA5854A}"
-        "PackageCode" = "8:{AAD2CFE3-59AF-46FB-B7F5-1CC1C94966E1}"
+        "ProductCode" = "8:{DB1FFE6D-E84A-4771-8D9F-A650E50BD63E}"
+        "PackageCode" = "8:{6B327DF7-721C-4D2B-96F9-6EE8F241EA5B}"
         "UpgradeCode" = "8:{DB500710-D86C-4F46-97E0-B26C43E89012}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:2.2.0"
+        "ProductVersion" = "8:2.2.1"
         "Manufacturer" = "8:CRK"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -806,7 +806,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_A7756D9D28CC4EE5A8B4E124ACBCFA72"
             {
-            "SourcePath" = "8:..\\ReToolNaming\\obj\\x64\\Release_x64\\MatchSubs4Vids.exe"
+            "SourcePath" = "8:..\\ReToolNaming\\obj\\x86\\Release\\MatchSubs4Vids.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_9580AB218B3D47D6AA79385AF3685C06"

@@ -57,6 +57,9 @@
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
             this.bgWorker = new System.ComponentModel.BackgroundWorker();
+            this.cbAutoClear = new System.Windows.Forms.CheckBox();
+            this.lRegexHint = new System.Windows.Forms.Label();
+            this.bDeepDetect = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -87,6 +90,9 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.splitContainer1.Panel2.Controls.Add(this.bDeepDetect);
+            this.splitContainer1.Panel2.Controls.Add(this.lRegexHint);
+            this.splitContainer1.Panel2.Controls.Add(this.cbAutoClear);
             this.splitContainer1.Panel2.Controls.Add(this.statusStrip1);
             this.splitContainer1.Panel2.Controls.Add(this.cbRegexes);
             this.splitContainer1.Panel2.Controls.Add(this.cbSpeed);
@@ -235,7 +241,7 @@
             // 
             this.lStatus.Name = "lStatus";
             this.lStatus.RightToLeftAutoMirrorImage = true;
-            this.lStatus.Size = new System.Drawing.Size(1168, 17);
+            this.lStatus.Size = new System.Drawing.Size(1199, 17);
             this.lStatus.Spring = true;
             this.lStatus.Text = "Drag&&Drop below the folder you want to target, OR have the path copied in clipbo" +
     "ard (copy/paste) OR used F4 to select it.";
@@ -263,7 +269,7 @@
             this.cbSpeed.AutoSize = true;
             this.cbSpeed.Checked = true;
             this.cbSpeed.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbSpeed.Location = new System.Drawing.Point(441, 11);
+            this.cbSpeed.Location = new System.Drawing.Point(333, 11);
             this.cbSpeed.Name = "cbSpeed";
             this.cbSpeed.Size = new System.Drawing.Size(46, 17);
             this.cbSpeed.TabIndex = 10;
@@ -276,7 +282,7 @@
             this.bClearMatching.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.bClearMatching.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.bClearMatching.ForeColor = System.Drawing.Color.DarkRed;
-            this.bClearMatching.Location = new System.Drawing.Point(493, 7);
+            this.bClearMatching.Location = new System.Drawing.Point(385, 7);
             this.bClearMatching.Name = "bClearMatching";
             this.bClearMatching.Size = new System.Drawing.Size(110, 23);
             this.bClearMatching.TabIndex = 9;
@@ -293,12 +299,13 @@
             this.cbUseComplexRegex.Checked = true;
             this.cbUseComplexRegex.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbUseComplexRegex.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cbUseComplexRegex.Location = new System.Drawing.Point(441, 41);
+            this.cbUseComplexRegex.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.cbUseComplexRegex.Location = new System.Drawing.Point(419, 41);
             this.cbUseComplexRegex.Name = "cbUseComplexRegex";
-            this.cbUseComplexRegex.Size = new System.Drawing.Size(54, 17);
+            this.cbUseComplexRegex.Size = new System.Drawing.Size(76, 17);
             this.cbUseComplexRegex.TabIndex = 7;
             this.cbUseComplexRegex.TabStop = false;
-            this.cbUseComplexRegex.Text = "Regex";
+            this.cbUseComplexRegex.Text = "Regex (*)";
             this.cbUseComplexRegex.UseVisualStyleBackColor = true;
             this.cbUseComplexRegex.CheckedChanged += new System.EventHandler(this.cbUseComplexRegex_CheckedChanged);
             // 
@@ -307,7 +314,7 @@
             this.bAutoDetect.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.bAutoDetect.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.bAutoDetect.ForeColor = System.Drawing.Color.DarkGreen;
-            this.bAutoDetect.Location = new System.Drawing.Point(712, 7);
+            this.bAutoDetect.Location = new System.Drawing.Point(604, 7);
             this.bAutoDetect.Name = "bAutoDetect";
             this.bAutoDetect.Size = new System.Drawing.Size(115, 23);
             this.bAutoDetect.TabIndex = 1;
@@ -346,7 +353,7 @@
             // 
             this.bMatch.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.bMatch.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.bMatch.Location = new System.Drawing.Point(609, 7);
+            this.bMatch.Location = new System.Drawing.Point(501, 7);
             this.bMatch.Name = "bMatch";
             this.bMatch.Size = new System.Drawing.Size(97, 23);
             this.bMatch.TabIndex = 4;
@@ -358,12 +365,12 @@
             // bFilterRight
             // 
             this.bFilterRight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.bFilterRight.Location = new System.Drawing.Point(991, 38);
+            this.bFilterRight.Location = new System.Drawing.Point(977, 38);
             this.bFilterRight.Name = "bFilterRight";
-            this.bFilterRight.Size = new System.Drawing.Size(75, 23);
+            this.bFilterRight.Size = new System.Drawing.Size(89, 23);
             this.bFilterRight.TabIndex = 3;
             this.bFilterRight.TabStop = false;
-            this.bFilterRight.Text = "Filter right";
+            this.bFilterRight.Text = "Filter right (F5)";
             this.bFilterRight.UseVisualStyleBackColor = true;
             this.bFilterRight.Click += new System.EventHandler(this.bFilterRight_Click);
             // 
@@ -372,10 +379,10 @@
             this.bFilterLeft.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.bFilterLeft.Location = new System.Drawing.Point(247, 38);
             this.bFilterLeft.Name = "bFilterLeft";
-            this.bFilterLeft.Size = new System.Drawing.Size(75, 23);
+            this.bFilterLeft.Size = new System.Drawing.Size(89, 23);
             this.bFilterLeft.TabIndex = 2;
             this.bFilterLeft.TabStop = false;
-            this.bFilterLeft.Text = "Filter left";
+            this.bFilterLeft.Text = "Filter left (F5)";
             this.bFilterLeft.UseVisualStyleBackColor = true;
             this.bFilterLeft.Click += new System.EventHandler(this.bFilterLeft_Click);
             // 
@@ -424,6 +431,45 @@
             this.bgWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgWorker_DoWork);
             this.bgWorker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.bgWorker_ProgressChanged);
             this.bgWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgWorker_RunWorkerCompleted);
+            // 
+            // cbAutoClear
+            // 
+            this.cbAutoClear.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.cbAutoClear.AutoSize = true;
+            this.cbAutoClear.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.cbAutoClear.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cbAutoClear.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.cbAutoClear.Location = new System.Drawing.Point(846, 10);
+            this.cbAutoClear.Name = "cbAutoClear";
+            this.cbAutoClear.Size = new System.Drawing.Size(104, 17);
+            this.cbAutoClear.TabIndex = 13;
+            this.cbAutoClear.TabStop = false;
+            this.cbAutoClear.Text = "AutoClear ( / )";
+            this.cbAutoClear.UseVisualStyleBackColor = true;
+            // 
+            // lRegexHint
+            // 
+            this.lRegexHint.AutoSize = true;
+            this.lRegexHint.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lRegexHint.Location = new System.Drawing.Point(829, 41);
+            this.lRegexHint.Name = "lRegexHint";
+            this.lRegexHint.Size = new System.Drawing.Size(43, 17);
+            this.lRegexHint.TabIndex = 14;
+            this.lRegexHint.Text = " + / -";
+            // 
+            // bDeepDetect
+            // 
+            this.bDeepDetect.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.bDeepDetect.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.bDeepDetect.ForeColor = System.Drawing.Color.Fuchsia;
+            this.bDeepDetect.Location = new System.Drawing.Point(725, 7);
+            this.bDeepDetect.Name = "bDeepDetect";
+            this.bDeepDetect.Size = new System.Drawing.Size(115, 23);
+            this.bDeepDetect.TabIndex = 15;
+            this.bDeepDetect.TabStop = false;
+            this.bDeepDetect.Text = "Deep Detect (F2)";
+            this.bDeepDetect.UseVisualStyleBackColor = true;
+            this.bDeepDetect.Click += new System.EventHandler(this.bDeepDetect_Click);
             // 
             // MainForm
             // 
@@ -497,6 +543,9 @@
         private System.Windows.Forms.Button bASD;
         protected System.ComponentModel.BackgroundWorker bgWorker;
         public System.Windows.Forms.ToolStripProgressBar pbProgress;
+        private System.Windows.Forms.CheckBox cbAutoClear;
+        private System.Windows.Forms.Label lRegexHint;
+        private System.Windows.Forms.Button bDeepDetect;
     }
 }
 

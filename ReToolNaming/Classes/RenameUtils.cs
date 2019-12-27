@@ -12,11 +12,19 @@ namespace Classes
 {
     public class RenameUtils
     {
+        public const int LIST_VIEW_MATCH_INDEX = 3;
+
         public const string DIRECTION_LEFT = "left";
         public const string DIRECTION_RIGHT = "right";
 
         private List<string> ListColors;
         private int indexMatch;
+
+        public void InitializeUtils()
+        {
+            this.ListColors = GetColors();
+            this.indexMatch = 1;
+        }
 
         public void SetIndexMatch(int indexMatch)
         {
@@ -46,7 +54,7 @@ namespace Classes
             var items = new[] {
                 new { Text =  "Used for S12E34 or s1e34 formats. ([sS]\\d{1,2}.[eE]\\d{1,2})", Value ="[sS]\\d{1,2}.[eE]\\d{1,2}"},
                 new { Text = "Used for .1234. or .123. formats. (\\.\\d{3,4}\\.)", Value = "\\.\\d{3,4}\\." },
-                new { Text = "Used for 12x34 or 1x23 formats. (\\d{1,2}[xX]\\d{1,2})", Value = "\\d{1,2}[xX]\\d{1,2}" }
+                new { Text = "Used for 12x34 or 1x23 formats. ([1-9]\\d|\\d)[xX](\\d{1,2})", Value = "([1-9]\\d|\\d)[xX](\\d{1,2})" }
             };
 
 
@@ -60,11 +68,6 @@ namespace Classes
             tbRight.Text = "*.srt|*.sub|*.str";
         }
 
-        public void InitializeUtils()
-        {
-            this.ListColors = GetColors();
-            this.indexMatch = 1;
-        }
 
         public static void InitListView(ListView lvFiles)
         {
@@ -224,7 +227,7 @@ namespace Classes
         {
             foreach (ListViewItem lvItem in lvObject.Items)
             {
-                lvItem.SubItems[3].Text = string.Empty;
+                lvItem.SubItems[LIST_VIEW_MATCH_INDEX].Text = string.Empty;
                 lvItem.BackColor = Color.White;
             }
         }
@@ -263,13 +266,12 @@ namespace Classes
                 if (String.Empty == strComplexRegex)
                 {
                     //if there is no Regex set use a default one.
-                    //MessageBox.Show(string.Join(null, System.Text.RegularExpressions.Regex.Split(expr, "[^\\d$]")));
                     return string.Join(null, System.Text.RegularExpressions.Regex.Split(expr, "[^\\d$]"));
                 }
                 else
                 {
-                    //MessageBox.Show(System.Text.RegularExpressions.Regex.Match(expr, strComplexRegex).Value.ToString());
-                    return System.Text.RegularExpressions.Regex.Match(expr, strComplexRegex).Value.ToString();
+                    return string.Join(null, System.Text.RegularExpressions.Regex.Split(
+                        System.Text.RegularExpressions.Regex.Match(expr, strComplexRegex).Value.ToString(), "[^\\d$]"));
                 }
             } catch (Exception)
             {
@@ -315,7 +317,7 @@ namespace Classes
             {
                 if (lvItem.Checked)
                 {
-                    lvItem.SubItems[3].Text = this.indexMatch.ToString();
+                    lvItem.SubItems[LIST_VIEW_MATCH_INDEX].Text = this.indexMatch.ToString();
                     lvItem.BackColor = Color.FromName(this.ListColors[(this.indexMatch) % (this.ListColors.Count())]);
                     lvItem.Checked = false;
                     break;
@@ -338,43 +340,56 @@ namespace Classes
             }
         }
 
-        public void AutoMatchListViews(ListView lvFilesLeft, ListView lvFilesRight, ToolStripProgressBar pbProgres, bool flagUseComplexRegex, string strRegex, bool flagUseFastRendering)
+        public int AutoMatchListViews(ListView lvFilesLeft, ListView lvFilesRight, ToolStripProgressBar pbProgres, bool flagUseComplexRegex, string strRegex, bool flagUseFastRendering, bool flagClearMatching)
         {
-            RenameUtils.ClearMathingLeftRight(lvFilesLeft, lvFilesRight);
-            if (!flagUseComplexRegex) strRegex = ".*";
+            int matchCounter = 0;
+
+            if (flagClearMatching) RenameUtils.ClearMathingLeftRight(lvFilesLeft, lvFilesRight);
+            
             LogUtils.AddLogTextLine("Auto matching operation " + (flagUseComplexRegex ? "with " : "without ") + "regex support " + (flagUseFastRendering ? "using " : "not using ") + "fast rendering.");
+            
             pbProgres.Value = 0;
             foreach (ListViewItem lvItem in lvFilesLeft.Items)
             {
-                if (lvItem.SubItems[3].Text != string.Empty) continue;
+                //if matching done - skip
+                if (lvItem.SubItems[LIST_VIEW_MATCH_INDEX].Text != string.Empty) continue;
 
-                string strLeftFileName = lvItem.Text;
+                string strLeftFileName = GetFilenameWithoutExtension(lvItem.Text);
                 string strKeyNumberLeft = RenameUtils.ExtractNumbers(strLeftFileName, flagUseComplexRegex ? strRegex : String.Empty);
 
-                if (flagUseFastRendering && strKeyNumberLeft == "") continue;
+                if (strKeyNumberLeft == "")
+                {
+                    //MessageBox.Show("CONTINUE 1");
+                    continue;
+                }
+
+                int.TryParse(strKeyNumberLeft, out int uniqueLeftFileId);
 
                 foreach (ListViewItem lvRightItem in lvFilesRight.Items)
                 {
-                    if (lvRightItem.SubItems[3].Text != string.Empty) continue;
+                    //if matching done - skip
+                    if (lvRightItem.SubItems[LIST_VIEW_MATCH_INDEX].Text != string.Empty) continue;
 
-                    string strRightFileName = lvRightItem.Text;
+                    string strRightFileName = GetFilenameWithoutExtension(lvRightItem.Text);
                     string strKeyNumberRight = RenameUtils.ExtractNumbers(strRightFileName, flagUseComplexRegex ? strRegex : String.Empty);
 
-                    if (flagUseFastRendering && strKeyNumberRight == "") continue;
+                    if (strKeyNumberRight == "")
+                    {
+                        //MessageBox.Show("CONTINUE 2");
+                        continue;
+                    }
 
-                    //if (flagUseComplexRegex)
-                    //{
-                    //    strKeyNumberLeft = RenameUtils.ExtractNumbers(strKeyNumberLeft, string.Empty);
-                    //    strKeyNumberRight = RenameUtils.ExtractNumbers(strKeyNumberRight, string.Empty);
-                    //}
+                    int.TryParse(strKeyNumberRight, out int uniqueRightFileId);
 
-                    //MessageBox.Show((strLeftFileName) + " - " + strKeyNumberLeft + " -=- " + strRightFileName + " - " + strKeyNumberRight);
+                    //MessageBox.Show(strKeyNumberLeft + " : " + uniqueLeftFileId.ToString() + " || " + strKeyNumberRight + " : " + uniqueRightFileId.ToString());
 
-                    if (strKeyNumberLeft.Contains(strKeyNumberRight) || strKeyNumberRight.Contains(strKeyNumberLeft))
+                    if ((!flagUseComplexRegex && uniqueLeftFileId == uniqueRightFileId) ||
+                        (flagUseComplexRegex && (strKeyNumberLeft.Contains(strKeyNumberRight) || strKeyNumberRight.Contains(strKeyNumberLeft))))
                     {
                         lvItem.Checked = true;
                         lvRightItem.Checked = true;
                         this.MatchLeftRight(lvFilesLeft, lvFilesRight);
+                        matchCounter++;
                         if (!flagUseFastRendering)
                         {
                             lvFilesLeft.Refresh();//for special effect.
@@ -386,6 +401,29 @@ namespace Classes
 
                 pbProgres.Value = (int)((decimal)(lvItem.Index + 1.00) * (decimal)(100.00 / lvFilesLeft.Items.Count));
             }
+
+            pbProgres.Value = 100;
+            return matchCounter;
+        }
+
+        public int DeepMatchListViews(ListView lvFilesLeft, ListView lvFilesRight, ToolStripProgressBar pbProgres, ComboBox cbRegexes)
+        {
+            int matchCounter = 0;
+            pbProgres.Value = 0;
+            LogUtils.AddLogTextLine("Deep matching operation started.");
+
+            RenameUtils.ClearMathingLeftRight(lvFilesLeft, lvFilesRight);
+            
+            foreach(var item in cbRegexes.Items)
+            {
+                string regex = item.GetType().GetProperty("Value").GetValue(item, null).ToString();
+                matchCounter += AutoMatchListViews(lvFilesLeft, lvFilesRight, pbProgres, true, regex, true, false);
+            }
+
+            matchCounter += AutoMatchListViews(lvFilesLeft, lvFilesRight, pbProgres, false, "", true, false);
+
+            pbProgres.Value = 100;
+            return matchCounter;
         }
 
         public void Rename(string strDirection, ListView lvFilesLeft, ListView lvFilesRight, FolderBrowserDialog folderBrowserDialog, string strSearchPatternLeft, string strSearchPatternRight)
@@ -396,7 +434,7 @@ namespace Classes
                 {
                     foreach (ListViewItem lvItemRight in lvFilesRight.Items)
                     {
-                        if (lvItemLeft.SubItems[3].Text == lvItemRight.SubItems[3].Text && lvItemLeft.SubItems[3].Text.Length > 0)
+                        if (lvItemLeft.SubItems[LIST_VIEW_MATCH_INDEX].Text == lvItemRight.SubItems[LIST_VIEW_MATCH_INDEX].Text && lvItemLeft.SubItems[LIST_VIEW_MATCH_INDEX].Text.Length > 0)
                         {
                             FileInfo fileInfoLeft = new FileInfo(RenameUtils.GetFullPath(folderBrowserDialog) + "\\" + lvItemLeft.Text);
                             string strLeftFileNameOnly = fileInfoLeft.Name;
@@ -410,15 +448,15 @@ namespace Classes
                             {
                                 File.Move(fileInfoRight.FullName, fileInfoRight.Directory.FullName + "\\" + strLeftFileNameOnly + fileInfoRight.Extension);
                                 LogUtils.AddLogTextLine("Renamed " + fileInfoRight.FullName + " to " + fileInfoRight.Directory.FullName + "\\" + strLeftFileNameOnly + fileInfoRight.Extension);
-                                lvItemLeft.SubItems[3].Text = "";
-                                lvItemRight.SubItems[3].Text = "";
+                                lvItemLeft.SubItems[LIST_VIEW_MATCH_INDEX].Text = "";
+                                lvItemRight.SubItems[LIST_VIEW_MATCH_INDEX].Text = "";
                             }
                             else
                             {
                                 File.Move(fileInfoLeft.FullName, fileInfoLeft.Directory.FullName + "\\" + strRightFileNameOnly + fileInfoLeft.Extension);
                                 LogUtils.AddLogTextLine("Renamed " + fileInfoLeft.FullName + " to " + fileInfoLeft.Directory.FullName + "\\" + strRightFileNameOnly + fileInfoLeft.Extension);
-                                lvItemLeft.SubItems[3].Text = "";
-                                lvItemRight.SubItems[3].Text = "";
+                                lvItemLeft.SubItems[LIST_VIEW_MATCH_INDEX].Text = "";
+                                lvItemRight.SubItems[LIST_VIEW_MATCH_INDEX].Text = "";
                             }
                         }
                     }
@@ -426,6 +464,16 @@ namespace Classes
                 RenameUtils.PopulateFiles(lvFilesLeft, strSearchPatternLeft, folderBrowserDialog);
                 RenameUtils.PopulateFiles(lvFilesRight, strSearchPatternRight, folderBrowserDialog);
             }
+        }
+
+        private string GetFilenameWithoutExtension(string fileName)
+        {
+            int fileExtPos = fileName.LastIndexOf(".");
+            if (fileExtPos >= 0)
+            {
+                fileName = fileName.Substring(0, fileExtPos);
+            }
+            return fileName;
         }
     }
 }
